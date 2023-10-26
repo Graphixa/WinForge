@@ -7,7 +7,7 @@ Winforge is your gateway to seamless configuration deployment on Windows machine
 
 ## Overview
 
-Winforge is a powerful PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to maintain a consistent and optimized computing environment.
+Winforge is a powerful PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to automate your perfect setup on a fresh install.
 
 ## Features
 
