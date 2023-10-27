@@ -44,6 +44,7 @@ function Set-RegistryProperty {
 
 # ----------------------------------
 
+# NEEDS MENU and oarameters set * YES OR NO *
 function Set-Checkpoint {
 
     do {
@@ -71,6 +72,7 @@ function Set-Checkpoint {
   
 }
 
+## DONE >>
 function Set-ComputerName {
     if (-not $computerName) {
         $computerName = Read-Host "Set your Computer Name:"
@@ -81,7 +83,7 @@ function Set-ComputerName {
     
     try {
         Rename-Computer -NewName $computerName -Force
-        Start-Sleep 1
+        Start-Sleep 3
     }
     catch {
         Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
@@ -91,11 +93,15 @@ function Set-ComputerName {
     Clear-Host
     Write-Host "Computer name set to: " -NoNewline -ForegroundColor Yellow
     Write-Host $computerName -NoNewline -ForegroundColor White
-    Start-Sleep 1
+    Start-Sleep 4
 }
 
-function Set-Theme {
+function Set-ThemeOLD {
     # Prompt for the theme preferencee if it's not provided as a parameter [1 - Use Light Theme | 0 - Use Dark Theme]
+    param (
+        [switch]$theme
+    )
+
     if (-not $theme) {
         do {
             Clear-Host
@@ -126,6 +132,82 @@ function Set-Theme {
     Start-Sleep 1
 }
 
+## DONE >>
+function Set-Theme {
+<#
+.SYNOPSIS
+Sets the theme (Light Mode or Dark Mode) for the current user in Windows.
+
+.DESCRIPTION
+This function allows you to set the theme for the current user in Windows. You can choose between Light Mode and Dark Mode.
+
+.PARAMETER theme
+Specify the theme to set. You can use "Light" for Light Mode or "Dark" for Dark Mode. If not provided, the function will prompt you to choose a theme interactively.
+
+.EXAMPLE
+# Set the theme to Light Mode
+Set-Theme -theme "Light" or Set-Theme Light
+
+# Set the theme to Dark Mode
+Set-Theme -theme "Dark" or Set-Theme Dark
+#>
+
+    [CmdletBinding()]
+    param (
+        [string]$theme
+    )
+
+    if ($theme -eq "Light") {
+        $theme = 1  # Light Mode
+    } elseif ($theme -eq "Dark") {
+        $theme = 0  # Dark Mode
+    } else {
+        if (($theme -eq $null) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
+            do {
+                Clear-Host
+                Write-Host "Choose a theme option:" -ForegroundColor Yellow
+                Write-Host ""
+                Write-Host "[1] Light Mode"
+                Write-Host "[2] Dark Mode"
+                Write-Host ""
+                $choice = Read-Host "Enter the number corresponding to your choice (1-2)"
+
+                switch ($choice) {
+                    "1" {
+                        $theme = 1  # Light Mode
+                    }
+                    "2" {
+                        $theme = 0  # Dark Mode
+                    }
+                    Default {
+                        Clear-Host
+                        Write-Host "Invalid choice. Please select a valid number (1-2)." -ForegroundColor Red
+                        Start-Sleep -Seconds 2
+                    }
+                }
+            } while ($choice -ne "1" -and $choice -ne "2")
+        }
+    }
+
+    Write-Host ""
+    Write-Host "Setting theme..."
+    Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
+    Stop-Process -Name explorer -Force
+    Start-Process explorer
+
+    $themeChoice = if ($theme -eq 1) {
+        "Light Mode"
+    } else {
+        "Dark Mode"
+    }
+    Clear-Host
+    Write-Host "Theme Setting: " -NoNewline -ForegroundColor Yellow
+    Write-Host $themeChoice -NoNewline -ForegroundColor White
+    Start-Sleep 1
+}
+
+
+## DONE >>
 Function Set-WallPaper {
  
 <#
@@ -161,45 +243,62 @@ Function Set-WallPaper {
         Write-Host "Example: https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" -ForegroundColor Gray
         Write-Host ""
         $wallpaper = Read-Host "URL"
+
+       
     }
 
-
-    if (-not $wallpaperStyle) {
-        $validOptions = "Fill", "Fit", "Stretch", "Tile", "Centre", "Span"
-
-        while (-not $validOptions.Contains($wallpaperStyle)) {
-            Clear-Host
-            Write-Host "Choose your wallpaper style:"
-            Write-Host ""
-            Write-Host "Fill"
-            Write-Host "Fit"
-            Write-Host "Stretch"
-            Write-Host "Tile"
-            Write-Host "Centre"
-            Write-Host "Span"
-        
-            $wallpaperStyle = Read-Host "Style"
-        
-            if (-not $validOptions.Contains($wallpaperStyle)) {
-                Clear-Host
-                Write-Host ""
-                Write-Host " Invalid choice. Please select one of the provided options." -ForegroundColor Red
-                Start-Sleep 2
-            }
-        }
-        Clear-Host
-        Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
-        Write-Host $wallpaperStyle -ForegroundColor White
-        Start-Sleep 2
-    
-    }
     
     if (-not [string]::IsNullOrEmpty($wallpaper)) {
 
+        if (-not $wallpaperStyle) {
+
+            do {
+                Clear-Host
+                Write-Host "Choose your wallpaper style (1-6):"
+                Write-Host "[1] - Fit"
+                Write-Host "[2] - Fill"
+                Write-Host "[3] - Stretch"
+                Write-Host "[4] - Tile"
+                Write-Host "[5] - Centre"
+                Write-Host "[6] - Span"
+                Write-Host ""
+                $StyleChoice = Read-Host "Enter the number corresponding to your choice"
+            
+                switch ($StyleChoice) {
+                    "1" { $wallpaperStyle = "Fit" }
+                    "2" { $wallpaperStyle = "Fill" }
+                    "3" { $wallpaperStyle = "Stretch" }
+                    "4" { $wallpaperStyle = "Tile" }
+                    "5" { $wallpaperStyle = "Centre" }
+                    "6" { $wallpaperStyle = "Span" }
+                    Default {
+                        Clear-Host
+                        Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
+                        Start-Sleep -Seconds 2
+                        $StyleChoice = $null
+                    }
+                }
+            } while (-not $StyleChoice)
+            
+                        Clear-Host
+                        Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
+                        Write-Host $wallpaperStyle -ForegroundColor White
+                        Start-Sleep 2
+                        }
+
         try {
+            
+            $WallpaperFolder = "$HOME\Pictures\Wallpapers"
+
+            # Check if the folder exists, and if not, create it
+            if (-not (Test-Path $WallpaperFolder)) {
+                New-Item -Path $WallpaperFolder -ItemType Directory -Force | Out-Null
+            }
+            
+            $WallpaperDownloadPath = Join-Path -Path $WallpaperFolder -ChildPath (Split-Path -Path $wallpaper -Leaf)
+            
             # Use Invoke-RestMethod to fetch the file contents
-            $wallpaperDownloadPath = Join-Path -Path "$HOME\Pictures\Wallpapers" -ChildPath (Split-Path -Path $wallpaper -Leaf)
-            Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaper
+            Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
         }
         catch {
             Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
@@ -220,14 +319,14 @@ Function Set-WallPaper {
  
             If ($Style -eq "Tile") {
  
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force
+                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
+                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force | Out-Null
  
             }
             Else {
  
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force
+                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
+                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force | Out-Null
  
             }
  
@@ -251,7 +350,7 @@ public class Params
   
             $fWinIni = $UpdateIniFile -bor $SendChangeEvent
   
-            $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaper, $fWinIni)
+            $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
         }
         
         else {
@@ -263,67 +362,6 @@ public class Params
     
 }
 
-function Set-DesktopWallpaper {
-    param (
-        [string]$wallpaper
-    )
-
-    if (-not [string]::IsNullOrEmpty($wallpaper)) {
-        try {
-            # Use Invoke-RestMethod to fetch the file contents
-            $wallpaperPath = Invoke-RestMethod -Uri $wallpaper -OutFile "$HOME\Pictures\wallpaper.jpg"
-
-            # Define the registry keys for wallpaper settings
-            $RegPath = "HKCU:\Control Panel\Desktop"
-            $WallpaperStyle = 10  # Fill (default style)
-            $TileWallpaper = 0    # No tiling by default
-
-            # Check if the user provided a URL for the wallpaper
-            if (-not [string]::IsNullOrEmpty($wallpaperPath)) {
-                # Set wallpaper style and tile settings
-                if ($wallpaperPath -match ".jpg" -or $wallpaperPath -match ".jpeg") {
-                    $WallpaperStyle = 2  # Stretch
-                    $TileWallpaper = 0   # No tiling for image files
-                }
-
-                # Update registry settings for wallpaper
-                Set-ItemProperty -Path $RegPath -Name Wallpaper -Value $wallpaperPath
-                Set-ItemProperty -Path $RegPath -Name WallpaperStyle -Value $WallpaperStyle
-                Set-ItemProperty -Path $RegPath -Name TileWallpaper -Value $TileWallpaper
-
-                # Set the desktop wallpaper
-                Add-Type -TypeDefinition @"
-                    using System;
-                    using System.Runtime.InteropServices;
-                    public class Params {
-                        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-                        public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
-                    }
-"@
-                $SPI_SETDESKWALLPAPER = 0x0014
-                $UpdateIniFile = 0x01
-                $SendChangeEvent = 0x02
-                $fWinIni = $UpdateIniFile -bor $SendChangeEvent
-                [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperPath, $fWinIni)
-
-                Write-Host "Desktop wallpaper set to: $wallpaperPath"
-            }
-        }
-        catch {
-            Write-Host "An error occurred while fetching or processing the wallpaper file: $_"
-        }
-    }
-    else {
-        # The user entered nothing, so skip setting the wallpaper.
-        Write-Host "Wallpaper setting skipped."
-    }
-}
-
-function Set-TaskbarColors {
-
-    Write-Host "Setting Windows taskbar colors..."
-
-}
 
 function Install-Apps {
     param (
@@ -332,12 +370,18 @@ function Install-Apps {
 
     if (-not $apps) {
         do {
-            Write-Host "What would you like to do?"
-            Write-Host "1. Use Default App List - Pack: https://winstall.app/packs/hEZLyyrSB"
-            Write-Host "2. Specify your own URL (must be a JSON file with the proper winget import schema)"
-            Write-Host "3. Skip (Don't install apps)"
-            
-            $choice = Read-Host "Enter the number of your choice (1/2/3):"
+            Clear-Host
+            Write-Host "Do you want to install apps on the system?" -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "[1] - Use default app list " -NoNewline
+            Write-Host "| https://winstall.app/packs/hEZLyyrSB" -ForegroundColor Gray
+            Write-Host "[2] - Specify your own URL " -NoNewline
+            Write-Host "| Must be a winget import file in JSON format" -ForegroundColor Gray
+            Write-Host "[3] - Skip " -NoNewline
+            Write-Host  -NoNewline
+            Write-Host "| Don't install any apps" -ForegroundColor Gray
+            Write-Host ""
+            $choice = Read-Host "Choose an option [1-3]"
 
             switch ($choice) {
                 1 {
