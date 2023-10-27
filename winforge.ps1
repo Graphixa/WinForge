@@ -1,4 +1,4 @@
-# Winforge PowerShell Configuration Script
+#Requires -RunAsAdministrator
 
 param (
     [int]$theme,
@@ -12,6 +12,13 @@ param (
 # You can call your winforge.ps1 script with the parameters as follows:
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
 
+# Parameter Options
+# ------------------
+# theme: - 1 for light theme, 2 for dark theme
+# wallpaper: https://imageurl.com/mywallpaper.jpg or leave blank to skip
+# computerName: "Bob's PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
+# settings: Add a url to your O&O shutup configuration file, feel free to use the default one or alternatively leave blank to skip
+# apps: Add a url to your JSON file, check GitHub for layout of JSON file, alternatively leave blank to skip
 
 function Set-RegistryProperty {
     # Example usage: Set-RegistryProperty -Path 'HKCU:\Software\Example' -Name 'SampleValue' -Value 'NewValue' -PropertyType 'String'
@@ -77,6 +84,8 @@ function Set-ComputerName {
     }
     catch {
         Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+        Write-Host ""
+        Pause
     }
     Write-Host "Computer name set to: $computerName"
     Start-Sleep 1
@@ -120,7 +129,7 @@ param (
     # Provide wallpaper style that you would like applied
     [parameter(Mandatory=$False)]
     [ValidateSet('Fill', 'Fit', 'Stretch', 'Tile', 'Center', 'Span')]
-    [string]$WallpaperStyle
+    [string]$wallpaperStyle
 )
 
 if (-not $wallpaper) {
@@ -134,7 +143,9 @@ if (-not [string]::IsNullOrEmpty($wallpaper)) {
         $wallpaperPath = Invoke-RestMethod -Uri $wallpaper -OutFile "$HOME\Pictures\wallpaper.jpg"
     }
     catch {
-        Write-Host "Error occured importing wallpaper. Check the URL provided"
+        Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+        Write-Host ""
+        Pause
     }
 
  
@@ -197,35 +208,102 @@ function Set-TaskbarColors {
 
 }
 
-
 function Install-Apps {
+    param (
+        [string]$apps
+    )
 
-    if (-not $wallpaper) {
-        $wallpaper = Read-Host "Image URL for your desktop background?"
-        
+    if (-not $apps) {
+        do {
+            Write-Host "What would you like to do?"
+            Write-Host "1. Use Default App List - Pack: https://winstall.app/packs/hEZLyyrSB"
+            Write-Host "2. Specify your own URL (must be a JSON file with the proper winget import schema)"
+            Write-Host "3. Skip (Don't install apps)"
+            
+            $choice = Read-Host "Enter the number of your choice (1/2/3):"
+
+            switch ($choice) {
+                1 {
+                    $apps = "https://winstall.app/packs/hEZLyyrSB"
+                }
+                2 {
+                    $customUrl = Read-Host "Enter the URL to your custom JSON file:"
+                    if ($customUrl -match "\.json$") {
+                        $apps = $customUrl
+                    }
+                    else {
+                        Write-Host "The URL must point to a JSON file with the proper winget import schema." -ForegroundColor Red
+                    }
+                }
+                3 {
+                    Write-Host "Skipping app installation."
+                }
+                default {
+                    Write-Host "Invalid choice. Please choose 1, 2, or 3." -ForegroundColor Red
+                }
+            }
+        } while ($choice -ne "1" -and $choice -ne "2" -and $choice -ne "3")
     }
-    if (-not [string]::IsNullOrEmpty($wallpaper)) {
 
-
-# GitHub repository URL
-$apps = "https://raw.githubusercontent.com/graphixa/Winforge/main/applist.list"
-
-# Fetch the list of apps from GitHub
-$appsList = Invoke-RestMethod -Uri $githubRepoUrl
-
-# Create an array to hold the apps
-$wingetapps = @()
-
-# Split the lines in the list and add them to the array
-$appsList -split "`r`n" | ForEach-Object {
-    $wingetapps += $_
+    if (-not [string]::IsNullOrEmpty($apps)) {
+        try {
+            Write-Host "Installing applications..."
+            echo Y | winget list | Out-Null
+            winget import --import-file $apps
+        }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
+    }
 }
 
-# Print the array for verification
-$wingetapps
-    Write-Host "Installing applications..."
+<# Old Version that didn't use Winget Import
+function Install-Apps {
+    param (
+        [string]$apps
+    )
+
+    if (-not $apps) {
+        $apps = Read-Host "Specify the URL to your JSON file containing the list of apps:"
+    }
+        
+    if (-not [string]::IsNullOrEmpty($apps)) {
+        try {
+
+            # Fetch the list of apps from GitHub
+            $jsonContent = Invoke-RestMethod -Uri $apps
+
+            # Create the $wingetapps array
+            $wingetapps = @()
+
+            # Add the apps from the JSON file to the array
+            $wingetapps += $jsonContent
+
+            # Output the $wingetapps array for verification
+            $wingetapps
+
+            Write-Host "Installing applications..."
+
+          # We need to interact with winget and accept the source agreements
+          # before we're able to actually use it. So, just a random search
+          # command will work.
+          # winget search Microsoft.WindowsTerminal --accept-source-agreements
+            echo Y | winget list | Out-Null
+
+            foreach ($wingetapp in $wingetapps) {
+                winget install -e --accept-source-agreements --accept-package-agreements --id $wingetapp
+            }
+        }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
+    }
 }
-}
+#>
 
 function Import-OOShutupSettings {
     # Example usage:
@@ -265,7 +343,9 @@ function Import-OOShutupSettings {
             Start-Sleep 2
         }
         catch {
-            Write-Host "An error occurred while fetching or processing the configuration file: $_"
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
         }
     }
     else {

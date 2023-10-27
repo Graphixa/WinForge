@@ -1,24 +1,112 @@
-[
-    "7zip.7zip",
-    "CPUID.CPU-Z",
-    "CrystalDewWorld.CrystalDiskInfo",
-    "Discord.Discord",
-    "Git.Git",
-    "Google.Chrome",
-    "Microsoft.PowerToys",
-    "Microsoft.VisualStudioCode",
-    "Microsoft.WindowsTerminal",
-    "Mozilla.Firefox",
-    "RaspberryPiFoundation.RaspberryPiImager",
-    "REALiX.HWiNFO",
-    "TechPowerUp.GPU-Z",
-    "VideoLAN.VLC",
-    "Microsoft.VCRedist.2008.x86",
-    "Microsoft.VCRedist.2008.x64",
-    "Microsoft.VCRedist.2010.x86",
-    "Microsoft.VCRedist.2010.x64",
-    "Microsoft.VCRedist.2012.x86",
-    "Microsoft.VCRedist.2012.x64",
-    "Microsoft.VCRedist.2015+.x86",
-    "Microsoft.VCRedist.2015+.x64"
-]
+{
+    "$schema": "https://aka.ms/winget-packages.schema.1.0.json",
+    "WinGetVersion": "0.3.11201",
+    "Sources": [
+        {
+            "Packages": [
+                {
+                    "Id": "gerardog.gsudo",
+                    "Version": "2.4.1-fixnoninteractive"
+                },
+                {
+                    "Id": "Valve.Steam",
+                    "Version": "2.10.91.91"
+                },
+                {
+                    "Id": "EpicGames.EpicGamesLauncher",
+                    "Version": "1.3.82.0"
+                },
+                {
+                    "Id": "Malwarebytes.Malwarebytes",
+                    "Version": "4.6.4.286"
+                },
+                {
+                    "Id": "IObit.DriverBooster",
+                    "Version": "10.3.0"
+                },
+                {
+                    "Id": "Google.Chrome",
+                    "Version": "118.0.5993.118"
+                },
+                {
+                    "Id": "Microsoft.PowerToys",
+                    "Version": "0.74.1"
+                },
+                {
+                    "Id": "Git.Git",
+                    "Version": "2.42.0.2"
+                },
+                {
+                    "Id": "Microsoft.VisualStudioCode",
+                    "Version": "1.83.1"
+                },
+                {
+                    "Id": "NickeManarin.ScreenToGif",
+                    "Version": "2.39.0.0"
+                },
+                {
+                    "Id": "Notepad++.Notepad++",
+                    "Version": "8.5.8"
+                },
+                {
+                    "Id": "Microsoft.VCRedist.2015+.x64",
+                    "Version": "14.38.32919.0"
+                },
+                {
+                    "Id": "Oracle.JavaRuntimeEnvironment",
+                    "Version": "8.0.3910.13"
+                },
+                {
+                    "Id": "CPUID.CPU-Z",
+                    "Version": "2.07"
+                },
+                {
+                    "Id": "VideoLAN.VLC",
+                    "Version": "3.0.19"
+                },
+                {
+                    "Id": "Discord.Discord",
+                    "Version": "1.0.9018"
+                },
+                {
+                    "Id": "RARLab.WinRAR",
+                    "Version": "6.23.0"
+                },
+                {
+                    "Id": "Apple.iTunes",
+                    "Version": "12.13.0.9"
+                },
+                {
+                    "Id": "Microsoft.DotNet.Framework.DeveloperPack_4",
+                    "Version": "4.8.1"
+                },
+                {
+                    "Id": "Microsoft.DirectX",
+                    "Version": "9.29.1974.1"
+                },
+                {
+                    "Id": "REALiX.HWiNFO",
+                    "Version": "7.64"
+                },
+                {
+                    "Id": "OO-Software.ShutUp10",
+                    "Version": "1.9.1435"
+                },
+                {
+                    "Id": "Adobe.Acrobat.Reader.64-bit",
+                    "Version": "23.006.20360"
+                },
+                {
+                    "Id": "Rufus.Rufus",
+                    "Version": "4.3"
+                }
+            ],
+            "SourceDetails": {
+                "Argument": "https://winget.azureedge.net/cache",
+                "Identifier": "Microsoft.Winget.Source_8wekyb3d8bbwe",
+                "Name": "winget",
+                "Type": "Microsoft.PreIndexed.Package"
+            }
+        }
+    ]
+}
