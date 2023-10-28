@@ -119,7 +119,7 @@ function Set-Checkpoint {
 
 ## DONE >>
 function Set-ComputerName {
-    if (-not $computerName) {
+    if (-not [string]::IsNullOrEmpty($computerName)) {
         $computerName = Read-Host "Set your Computer Name:"
 
     }
@@ -161,17 +161,17 @@ Set-Theme -theme "Light" or Set-Theme Light
 Set-Theme -theme "Dark" or Set-Theme Dark
 #>
 
-    [CmdletBinding()]
-    param (
-        [string]$theme
-    )
+   # [CmdletBinding()]
+   # param (
+   #     [string]$theme
+   # )
 
     if ($theme -eq "Light") {
         $theme = 1  # Light Mode
     } elseif ($theme -eq "Dark") {
         $theme = 0  # Dark Mode
     } else {
-        if (-not [string]::IsNullOrEmpty($wallpaper) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
+        if ((-not [string]::IsNullOrEmpty($theme)) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
             do {
                 Clear-Host
                 Write-Host "Choose a theme option:" -ForegroundColor Yellow
@@ -247,7 +247,7 @@ Function Set-WallPaper {
         [string]$wallpaperStyle
     )
 
-    if (-not $wallpaper) {
+    if (-not [string]::IsNullOrEmpty($wallpaper)) {
 
         Clear-Host
         Write-Host "Paste a URL for your wallpaper or press [Enter] to skip:" -ForegroundColor Yellow
@@ -259,11 +259,9 @@ Function Set-WallPaper {
     }
 
     
-    if (-not [string]::IsNullOrEmpty($wallpaper)) {
+    if (-not [string]::IsNullOrEmpty($wallpaperStyle)) {
 
-        if (-not $wallpaperStyle) {
-
-            do {
+         do {
                 Clear-Host
                 Write-Host "Choose your wallpaper style (1-6):"
                 Write-Host "[1] - Fit"
@@ -378,7 +376,7 @@ function Install-Apps {
         [string]$apps
     )
 
-    if (-not $apps) {
+    if (-not [string]::IsNullOrEmpty($apps)) {
         $choiceMade = $false
 
         while (-not $choiceMade) {
@@ -434,7 +432,9 @@ function Install-Apps {
 
             Clear-Host
             Write-Host "Installing applications..." -ForegroundColor Yellow
-            echo Y | winget list | Out-Null
+            
+            #echo Y | winget list | Out-Null  # uses old Alias 'echo' removed for future compatability
+            Write-Output Y | winget list | Out-Null
             winget import --import-file $TempDownloadPath --ignore-versions --no-upgrade --accept-package-agreements --accept-source-agreements --disable-interactivity
         }
         catch {
@@ -502,7 +502,7 @@ function Import-Settings {
     )
 
 
-    if (-not $settings) {
+    if (-not [string]::IsNullOrEmpty($settings)) {
         $choiceMade = $false
 
         while (-not $choiceMade) {
@@ -678,7 +678,8 @@ function DeployAll {
     Import-Settings
     
     Clear-Host
-    Write-Host "WinForge Complete"
+    Write-Host "WinForge Complete" -ForegroundColor Green
+    Write-Host ""
     Pause
 }
 
