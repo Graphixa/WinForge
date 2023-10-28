@@ -229,14 +229,26 @@ Function Set-WallPaper {
     .SYNOPSIS
     Applies a specified wallpaper to the current user's desktop
     
-    .PARAMETER wallpaper
+    .PARAMETER Image
     Provide the exact path to the image
  
-    .PARAMETER wallpaperStyle
+    .PARAMETER Style
     Provide wallpaper style (Example: Fill, Fit, Stretch, Tile, Center, or Span)
   
+    .EXAMPLE
+    Set-WallPaper wallpaper "C:\Wallpaper\Default.jpg"
+    Set-WallPaper -Image "C:\Wallpaper\Background.jpg" -Style Fit
   
 #>
+
+ 
+    param (
+        [string]$wallpaper,
+        # Provide wallpaper style that you would like applied
+        [parameter(Mandatory = $False)]
+        [ValidateSet('Fill', 'Fit', 'Stretch', 'Tile', 'Center', 'Span')]
+        [string]$wallpaperStyle
+    )
 
     if ([string]::IsNullOrEmpty($wallpaper)) {
 
@@ -361,7 +373,12 @@ public class Params
     }
 }        
 
+    
+
 function Install-Apps {
+    param (
+        [string]$apps
+    )
 
     if ([string]::IsNullOrEmpty($apps)) {
         $choiceMade = $false
@@ -484,6 +501,11 @@ function Install-Apps {
 function Import-Settings {
     # Example usage:
     # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
+   
+    param (
+        [string]$settings
+    )
+
 
     if ([string]::IsNullOrEmpty($settings)) {
         $choiceMade = $false
