@@ -171,7 +171,7 @@ Set-Theme -theme "Dark" or Set-Theme Dark
     } elseif ($theme -eq "Dark") {
         $theme = 0  # Dark Mode
     } else {
-        if (($theme -eq $null) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
+        if (-not [string]::IsNullOrEmpty($wallpaper) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
             do {
                 Clear-Host
                 Write-Host "Choose a theme option:" -ForegroundColor Yellow
@@ -197,12 +197,14 @@ Set-Theme -theme "Dark" or Set-Theme Dark
             } while ($choice -ne "1" -and $choice -ne "2")
         }
     }
-
+    
+    Clear-Host
     Write-Host ""
-    Write-Host "Setting theme..."
+    Write-Host "Setting theme..." -ForegroundColor Yellow
+    Start-Sleep 2
     Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
     Stop-Process -Name explorer -Force
-    Start-Process explorer
+    Start-Process -Name explorer
 
     $themeChoice = if ($theme -eq 1) {
         "Light Mode"
