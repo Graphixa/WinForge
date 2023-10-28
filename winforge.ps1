@@ -13,7 +13,7 @@ param (
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
 
 #REMOTE USAGE
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme 1 -wallpaper 'https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg' -computerName "Bob's PC" -wallpaperStyle 'fill' -settings 'www.list.com/settings.json' -apps 'www.list.com/myapplist.json'
+# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme 1 -wallpaper 'https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg' -computerName "John-PC" -wallpaperStyle 'fill' -settings 'https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg' -apps 'https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json'
 
 
 # Parameter Options
@@ -62,9 +62,11 @@ function Show-ASCIIArt {
 ------------------------------------                          
      
 "@
-}
 
 Pause
+}
+
+
 # ----------------------------------
 
 ## DONE >>
@@ -210,7 +212,7 @@ Set-Theme -theme "Dark" or Set-Theme Dark
     Clear-Host
     Write-Host "Theme Setting: " -NoNewline -ForegroundColor Yellow
     Write-Host $themeChoice -NoNewline -ForegroundColor White
-    Start-Sleep 1
+    Start-Sleep 2
 }
 
 
@@ -363,8 +365,8 @@ public class Params
         else {
             # The user entered nothing, so skip setting the wallpaper.
             Clear-Host
-            Write-Host "Wallpaper import skipped."
-            Start-Sleep 1
+            Write-Host "Wallpaper import skipped." -ForegroundColor Yellow
+            Start-Sleep 2
         }
     
 }
@@ -660,20 +662,21 @@ function Import-RegistrySettingsOLD {
     else {
         # The user entered nothing, so skip calling your script.
         Write-Host "Settings import skipped."
-        Start-Sleep 1
+        Start-Sleep 2
     }
 }
 
 function DeployAll {
+    Show-ASCIIArt
     Set-Checkpoint
     Set-Theme
     Set-WallPaper
     Set-ComputerName
-    Import-Settings
     Install-Apps
-    Set-Desktopwallpaper
+    Import-Settings
     
-    Write-Host "Everything has been deployed."
+    Clear-Host
+    Write-Host "WinForge Complete"
     Pause
 }
 
