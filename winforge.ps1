@@ -63,7 +63,7 @@ function Show-ASCIIArt {
      
 "@
 
-Pause
+    Pause
 }
 
 
@@ -143,7 +143,7 @@ function Set-ComputerName {
 
 ## DONE >>
 function Set-Theme {
-<#
+    <#
 .SYNOPSIS
 Sets the theme (Light Mode or Dark Mode) for the current user in Windows.
 
@@ -161,16 +161,18 @@ Set-Theme -theme "Light" or Set-Theme Light
 Set-Theme -theme "Dark" or Set-Theme Dark
 #>
 
-   # [CmdletBinding()]
-   # param (
-   #     [string]$theme
-   # )
+    # [CmdletBinding()]
+    # param (
+    #     [string]$theme
+    # )
 
     if ($theme -eq "Light") {
         $theme = 1  # Light Mode
-    } elseif ($theme -eq "Dark") {
+    }
+    elseif ($theme -eq "Dark") {
         $theme = 0  # Dark Mode
-    } else {
+    }
+    else {
         if ((-not [string]::IsNullOrEmpty($theme)) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
             do {
                 Clear-Host
@@ -208,7 +210,8 @@ Set-Theme -theme "Dark" or Set-Theme Dark
 
     $themeChoice = if ($theme -eq 1) {
         "Light Mode"
-    } else {
+    }
+    else {
         "Dark Mode"
     }
     Clear-Host
@@ -221,7 +224,7 @@ Set-Theme -theme "Dark" or Set-Theme Dark
 ## DONE >>
 Function Set-WallPaper {
  
-<#
+    <#
  
     .SYNOPSIS
     Applies a specified wallpaper to the current user's desktop
@@ -261,85 +264,85 @@ Function Set-WallPaper {
     
     if (-not [string]::IsNullOrEmpty($wallpaperStyle)) {
 
-         do {
-                Clear-Host
-                Write-Host "Choose your wallpaper style (1-6):"
-                Write-Host "[1] - Fit"
-                Write-Host "[2] - Fill"
-                Write-Host "[3] - Stretch"
-                Write-Host "[4] - Tile"
-                Write-Host "[5] - Centre"
-                Write-Host "[6] - Span"
-                Write-Host ""
-                $StyleChoice = Read-Host "Enter the number corresponding to your choice"
-            
-                switch ($StyleChoice) {
-                    "1" { $wallpaperStyle = "Fit" }
-                    "2" { $wallpaperStyle = "Fill" }
-                    "3" { $wallpaperStyle = "Stretch" }
-                    "4" { $wallpaperStyle = "Tile" }
-                    "5" { $wallpaperStyle = "Centre" }
-                    "6" { $wallpaperStyle = "Span" }
-                    Default {
-                        Clear-Host
-                        Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
-                        Start-Sleep -Seconds 2
-                        $StyleChoice = $null
-                    }
-                }
-            } while (-not $StyleChoice)
-            
-                        Clear-Host
-                        Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
-                        Write-Host $wallpaperStyle -ForegroundColor White
-                        Start-Sleep 2
-                        }
-
-        try {
-            
-            $WallpaperFolder = "$HOME\Pictures\Wallpapers"
-
-            # Check if the folder exists, and if not, create it
-            if (-not (Test-Path $WallpaperFolder)) {
-                New-Item -Path $WallpaperFolder -ItemType Directory -Force | Out-Null
-            }
-            
-            $WallpaperDownloadPath = Join-Path -Path $WallpaperFolder -ChildPath (Split-Path -Path $wallpaper -Leaf)
-            
-            # Use Invoke-RestMethod to fetch the file contents
-            Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
-        }
-        catch {
-            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+        do {
+            Clear-Host
+            Write-Host "Choose your wallpaper style (1-6):"
+            Write-Host "[1] - Fit"
+            Write-Host "[2] - Fill"
+            Write-Host "[3] - Stretch"
+            Write-Host "[4] - Tile"
+            Write-Host "[5] - Centre"
+            Write-Host "[6] - Span"
             Write-Host ""
-            Pause
-        }
+            $StyleChoice = Read-Host "Enter the number corresponding to your choice"
+            
+            switch ($StyleChoice) {
+                "1" { $wallpaperStyle = "Fit" }
+                "2" { $wallpaperStyle = "Fill" }
+                "3" { $wallpaperStyle = "Stretch" }
+                "4" { $wallpaperStyle = "Tile" }
+                "5" { $wallpaperStyle = "Centre" }
+                "6" { $wallpaperStyle = "Span" }
+                Default {
+                    Clear-Host
+                    Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
+                    Start-Sleep -Seconds 2
+                    $StyleChoice = $null
+                }
+            }
+        } while (-not $StyleChoice)
+            
+        Clear-Host
+        Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
+        Write-Host $wallpaperStyle -ForegroundColor White
+        Start-Sleep 2
+    }
 
-            $Style = Switch ($WallpaperStyle) {
+    try {
+            
+        $WallpaperFolder = "$HOME\Pictures\Wallpapers"
+
+        # Check if the folder exists, and if not, create it
+        if (-not (Test-Path $WallpaperFolder)) {
+            New-Item -Path $WallpaperFolder -ItemType Directory -Force | Out-Null
+        }
+            
+        $WallpaperDownloadPath = Join-Path -Path $WallpaperFolder -ChildPath (Split-Path -Path $wallpaper -Leaf)
+            
+        # Use Invoke-RestMethod to fetch the file contents
+        Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
+    }
+    catch {
+        Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+        Write-Host ""
+        Pause
+    }
+
+    $Style = Switch ($WallpaperStyle) {
   
-                "Fill" { "10" }
-                "Fit" { "6" }
-                "Stretch" { "2" }
-                "Tile" { "0" }
-                "Center" { "0" }
-                "Span" { "22" }
+        "Fill" { "10" }
+        "Fit" { "6" }
+        "Stretch" { "2" }
+        "Tile" { "0" }
+        "Center" { "0" }
+        "Span" { "22" }
   
-            }
+    }
  
-            If ($Style -eq "Tile") {
+    If ($Style -eq "Tile") {
  
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force | Out-Null
+        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
+        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force | Out-Null
  
-            }
-            Else {
+    }
+    Else {
  
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
-                New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force | Out-Null
+        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
+        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force | Out-Null
  
-            }
+    }
  
-Add-Type -TypeDefinition @" 
+    Add-Type -TypeDefinition @" 
 using System; 
 using System.Runtime.InteropServices;
   
@@ -353,23 +356,22 @@ public class Params
 }
 "@ 
   
-            $SPI_SETDESKWALLPAPER = 0x0014
-            $UpdateIniFile = 0x01
-            $SendChangeEvent = 0x02
+    $SPI_SETDESKWALLPAPER = 0x0014
+    $UpdateIniFile = 0x01
+    $SendChangeEvent = 0x02
   
-            $fWinIni = $UpdateIniFile -bor $SendChangeEvent
+    $fWinIni = $UpdateIniFile -bor $SendChangeEvent
   
-            $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
-        }
-        
-        else {
-            # The user entered nothing, so skip setting the wallpaper.
-            Clear-Host
-            Write-Host "Wallpaper import skipped." -ForegroundColor Yellow
-            Start-Sleep 2
-        }
-    
+    $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
 }
+        
+else {
+    # The user entered nothing, so skip setting the wallpaper.
+    Clear-Host
+    Write-Host "Wallpaper import skipped." -ForegroundColor Yellow
+    Start-Sleep 2
+}
+    
 
 function Install-Apps {
     param (
@@ -424,8 +426,8 @@ function Install-Apps {
 
     if (-not [string]::IsNullOrEmpty($apps)) {
         try {
-        # Download Applist file from remote URL
-        $TempDownloadPath = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $apps -Leaf)
+            # Download Applist file from remote URL
+            $TempDownloadPath = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $apps -Leaf)
             
             # Use Invoke-RestMethod to fetch the file contents
             Invoke-RestMethod -Uri $apps -OutFile $TempDownloadPath
