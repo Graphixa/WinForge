@@ -656,3 +656,5 @@ function DeployAll {
     Write-Host "Everything has been deployed."
     Pause
 }
+
+DeployAll
