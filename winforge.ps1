@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 
 param (
-    [int]$theme,
+    [string]$theme,
     [string]$computerName,
     [string]$wallpaper,
     [string]$wallpaperStyle,
@@ -11,6 +11,10 @@ param (
 
 # You can call your winforge.ps1 script with the parameters as follows:
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
+
+#REMOTE USAGE
+# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme 1 -wallpaper 'https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg' -computerName "Bob's PC" -wallpaperStyle 'fill' -settings 'www.list.com/settings.json' -apps 'www.list.com/myapplist.json'
+
 
 # Parameter Options
 # ------------------
@@ -54,12 +58,13 @@ function Show-ASCIIArt {
                           |___|
 
 ------------------------------------
-Automate Your Perfect Windows Setup!
+      Forge Your Own System!
 ------------------------------------                          
      
 "@
 }
 
+Pause
 # ----------------------------------
 
 ## DONE >>
@@ -369,7 +374,7 @@ function Install-Apps {
         [string]$apps
     )
 
-    if (-not $apps -eq $null) {
+    if (-not $apps) {
         $choiceMade = $false
 
         while (-not $choiceMade) {
@@ -482,94 +487,103 @@ function Install-Apps {
 }
 #>
 
-function DownloadOOShutUp10 {
-    $url = "https://dl5.oo-software.com/files/ooshutup10/OOSU10.exe"
-        $downloadPath = "$env:TEMP\OOSU10.exe"
-    
-        try {
-            Write-Host "Downloading O&O ShutUp10 from the official website..."
-            Invoke-WebRequest -Uri $url -OutFile $downloadPath -UseBasicParsing
-            Write-Host "Download complete. Saved to $downloadPath."
-            
-            
-            Write-Host "Installing O&O ShutUp10 silently..."
 
-            # Define the installation command with silent options and install
-            $installArguments = "/quiet /nosrp /ignorereadonlycfg"  
-            Start-Process -FilePath $downloadPath -ArgumentList $installArguments -Wait
-    
-            Write-Host "Installation complete."
-    
-        } catch {
-            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
-        }
-    }
 
 function Import-Settings {
     # Example usage:
     # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
-
+   
     param (
         [string]$settings
     )
-   # if (-not $settings) {
-   #     $settings = Read-Host "URL to your settings file or press [Enter] to skip settings import"
-   # }
 
 
+    if (-not $settings) {
+        $choiceMade = $false
 
-   if (-not $settings -eq $null) {
-    $choiceMade = $false
+        while (-not $choiceMade) {
+            Clear-Host
+            Write-Host "Do you want to import O&OShutup10 Configuration?" -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "[1] - Use default configuration " -NoNewline
+            Write-Host "| https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -ForegroundColor Gray
+            Write-Host "[2] - Specify your own URL " -NoNewline
+            Write-Host "| Must be a O&OShutup Configuration file in CFG format" -ForegroundColor Gray
+            Write-Host "[3] - Skip " -NoNewline
+            Write-Host  -NoNewline
+            Write-Host "| Don't import any settings configuration file" -ForegroundColor Gray
+            Write-Host ""
+            $choice = Read-Host "Choose an option [1-3]"
 
-    while (-not $choiceMade) {
-        Clear-Host
-        Write-Host "Do you want to import O&OShutup10 Configuration?" -ForegroundColor Yellow
-        Write-Host ""
-        Write-Host "[1] - Use default configuration " -NoNewline
-        Write-Host "| https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -ForegroundColor Gray
-        Write-Host "[2] - Specify your own URL " -NoNewline
-        Write-Host "| Must be a O&OShutup Configuration file in CFG format" -ForegroundColor Gray
-        Write-Host "[3] - Skip " -NoNewline
-        Write-Host  -NoNewline
-        Write-Host "| Don't import any settings configuration file" -ForegroundColor Gray
-        Write-Host ""
-        $choice = Read-Host "Choose an option [1-3]"
-
-        switch ($choice) {
-            1 {
-                $settings = "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg"
-                $choiceMade = $true
-            }
-            2 {
-                Clear-Host
-                $customUrl = Read-Host "Enter the URL to your custom O&OShutup10 Configuration (.cfg) file"
-                if ($customUrl -match "\.cfg$") {
-                    $settings = $customUrl
+            switch ($choice) {
+                1 {
+                    $settings = "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg"
                     $choiceMade = $true
                 }
-                else {
-                    Write-Host "The URL must point to a (.cfg) file with the proper O&OShutup10 configuration layout." -ForegroundColor Red
+                2 {
+                    Clear-Host
+                    $customUrl = Read-Host "Enter the URL to your custom O&OShutup10 Configuration (.cfg) file"
+                    if ($customUrl -match "\.cfg$") {
+                        $settings = $customUrl
+                        $choiceMade = $true
+                    }
+                    else {
+                        Write-Host "The URL must point to a (.cfg) file with the proper O&OShutup10 configuration layout." -ForegroundColor Red
+                        Pause
+                    }
+                }
+                3 {
+                    Clear-Host
+                    Write-Host "Skipping settings configuration import."
+                    Start-Sleep 2
+                    $choiceMade = $true
+                }
+                default {
+                    Write-Host "Invalid choice. Please choose 1, 2, or 3." -ForegroundColor Red
                     Pause
                 }
             }
-            3 {
-                Write-Host "Skipping settings configuration import."
-                $choiceMade = $true
-            }
-            default {
-                Write-Host "Invalid choice. Please choose 1, 2, or 3." -ForegroundColor Red
-                Pause
-            }
         }
     }
-}
 
         
     if (-not [string]::IsNullOrEmpty($settings)) {
         try {
             
-            OOShutUp10
+            # Download O&OShutUp10
+            $url = "https://dl5.oo-software.com/files/ooshutup10/OOSU10.exe"
+            $fallbackURL = "https://github.com/Graphixa/WinForge/raw/main/OOSU10.exe"
+            
+            $downloadPath = "$env:TEMP\OOSU10.exe"
+        
+            try {
+                Clear-Host
+                Write-Host "Downloading O&O ShutUp10 from the official website..."
+                
+                try {
+                    Invoke-WebRequest -Uri $url -OutFile $downloadPath -UseBasicParsing
+                    Clear-Host
+                    Write-Host "Download complete..." -ForegroundColor Yellow
+                    Start-Sleep 2
+                }
+                catch {
+                    Clear-Host
+                    Write-Host "Unable to download from offical website."
+                    Write-Host "Attempting to download from Github "
+                    Write-Host ""
+                    Start-Sleep 2
+                    Invoke-WebRequest -Uri $fallbackURL -OutFile $downloadPath -UseBasicParsing
+                    Clear-Host
+                    Write-Host "Download complete..." -ForegroundColor Yellow
+                    Start-Sleep 2
+                }             
+            }
+            catch {
+                Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            }
 
+
+            # Set Configuration Download Path
             $OOShutup10Config = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $settings -Leaf)
             
             # Use Invoke-RestMethod to fetch the file contents
@@ -577,8 +591,13 @@ function Import-Settings {
 
             Clear-Host
             Write-Host "Configuring settings now..." -ForegroundColor Yellow
+            Start-Sleep 2
             
-            Start-Process $OOShutup10Config $settings
+            # Define the installation command with silent options and install
+            $installArguments = "$OOShutup10Config /quiet /nosrp"  
+            Start-Process -FilePath $downloadPath -ArgumentList $installArguments -Wait
+                    
+            Write-Host "Setting configuration import complete."
 
         }
         catch {
@@ -589,8 +608,9 @@ function Import-Settings {
     }
     else {
         # The user entered nothing, so skip calling your script.
-        Write-Host "Settings import skipped."
-        Start-Sleep 1
+        Clear-Host
+        Write-Host "Settings import skipped." -ForegroundColor Yellow
+        Start-Sleep 2
     }
 }
 
@@ -647,7 +667,7 @@ function Import-RegistrySettingsOLD {
 function DeployAll {
     Set-Checkpoint
     Set-Theme
-    Set-TaskbarColors
+    Set-WallPaper
     Set-ComputerName
     Import-Settings
     Install-Apps
