@@ -9,13 +9,6 @@ param (
     [string]$apps
 )
 
-Write-Host "Defined: $theme"
-Write-Host "Defined: $computerName"
-Write-Host "Defined: $wallpaper"
-Write-Host "Defined: $wallpaperStyle"
-Write-Host "Defined: $settings"
-Write-Host "Defined: $apps"
-Pause
 
 # You can call your winforge.ps1 script with the parameters as follows:
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
@@ -74,10 +67,6 @@ function Show-ASCIIArt {
     Pause
 }
 
-
-# ----------------------------------
-
-## DONE >>
 function Set-Checkpoint {
     do {
         Clear-Host
@@ -124,8 +113,6 @@ function Set-Checkpoint {
     }
 }
 
-
-## DONE >>
 function Set-ComputerName {
     if ([string]::IsNullOrEmpty($computerName)) {
         $computerName = Read-Host "Set your Computer Name:"
@@ -227,8 +214,6 @@ Set-Theme -theme "Dark" or Set-Theme Dark
     Start-Sleep 2
 }
 
-
-## DONE >>
 Function Set-WallPaper {
  
 <#
@@ -296,6 +281,11 @@ Function Set-WallPaper {
         # Download Wallpaper from URL
         try {
             
+            Clear-Host
+            Write-Host "Importing wallpaper..." -ForegroundColor Yellow
+            Write-Host ""
+            Start-Sleep 2
+
             $WallpaperFolder = "$HOME\Pictures\Wallpapers"
 
             # Check if the folder exists, and if not, create it
@@ -304,7 +294,7 @@ Function Set-WallPaper {
             }
             
             $WallpaperDownloadPath = Join-Path -Path $WallpaperFolder -ChildPath (Split-Path -Path $wallpaper -Leaf)
-            
+                        
             # Use Invoke-RestMethod to fetch the file contents
             Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
             
@@ -677,7 +667,19 @@ function DeployAll {
     Import-Settings
     
     Clear-Host
-    Write-Host "WinForge Complete" -ForegroundColor Green
+    Write-Host "Success..." -ForegroundColor Green
+    Write-Host ""
+    Write-Host @"
+
+         WinForge Complete
+                              \`.  
+    .--------------.___________) \ 
+    |//////////////|___________[ ]
+    `--------------'           ) (
+                               '-'
+
+
+"@
     Write-Host ""
     Pause
 }
