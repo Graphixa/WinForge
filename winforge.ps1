@@ -262,44 +262,46 @@ Function Set-WallPaper {
     }
 
     
-    if ([string]::IsNullOrEmpty($wallpaperStyle)) {
 
-        do {
-            Clear-Host
-            Write-Host "Choose your wallpaper style (1-6):"
-            Write-Host "[1] - Fit"
-            Write-Host "[2] - Fill"
-            Write-Host "[3] - Stretch"
-            Write-Host "[4] - Tile"
-            Write-Host "[5] - Centre"
-            Write-Host "[6] - Span"
-            Write-Host ""
-            $StyleChoice = Read-Host "Enter the number corresponding to your choice"
-            
-            switch ($StyleChoice) {
-                "1" { $wallpaperStyle = "Fit" }
-                "2" { $wallpaperStyle = "Fill" }
-                "3" { $wallpaperStyle = "Stretch" }
-                "4" { $wallpaperStyle = "Tile" }
-                "5" { $wallpaperStyle = "Centre" }
-                "6" { $wallpaperStyle = "Span" }
-                Default {
-                    Clear-Host
-                    Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
-                    Start-Sleep -Seconds 2
-                    $StyleChoice = $null
-                }
-            }
-        } while (-not $StyleChoice)
-            
-        Clear-Host
-        Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
-        Write-Host $wallpaperStyle -ForegroundColor White
-        Start-Sleep 2
-    }
 
     # 2nd Check of $wallpaper variable - if still empty, skips the function entirely.
     if ([string]::IsNullOrEmpty($wallpaper)) {
+
+        if ([string]::IsNullOrEmpty($wallpaperStyle)) {
+
+            do {
+                Clear-Host
+                Write-Host "Choose your wallpaper style (1-6):"
+                Write-Host "[1] - Fit"
+                Write-Host "[2] - Fill"
+                Write-Host "[3] - Stretch"
+                Write-Host "[4] - Tile"
+                Write-Host "[5] - Centre"
+                Write-Host "[6] - Span"
+                Write-Host ""
+                $StyleChoice = Read-Host "Enter the number corresponding to your choice"
+                
+                switch ($StyleChoice) {
+                    "1" { $wallpaperStyle = "Fit" }
+                    "2" { $wallpaperStyle = "Fill" }
+                    "3" { $wallpaperStyle = "Stretch" }
+                    "4" { $wallpaperStyle = "Tile" }
+                    "5" { $wallpaperStyle = "Centre" }
+                    "6" { $wallpaperStyle = "Span" }
+                    Default {
+                        Clear-Host
+                        Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
+                        Start-Sleep -Seconds 2
+                        $StyleChoice = $null
+                    }
+                }
+            } while (-not $StyleChoice)
+                
+            Clear-Host
+            Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
+            Write-Host $wallpaperStyle -ForegroundColor White
+            Start-Sleep 2
+        }
 
 
         # Download Wallpaper from URL
