@@ -256,16 +256,11 @@ Function Set-WallPaper {
         Write-Host "Paste a URL for your wallpaper or press [Enter] to skip:" -ForegroundColor Yellow
         Write-Host "Example: https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" -ForegroundColor Gray
         Write-Host ""
-        $wallpaper = Read-Host "Wallpaper URL"
-
-       
+        $wallpaper = Read-Host "Wallpaper URL" 
     }
 
-    
-
-
     # 2nd Check of $wallpaper variable - if still empty, skips the function entirely.
-    if ([string]::IsNullOrEmpty($wallpaper)) {
+    if (-not [string]::IsNullOrEmpty($wallpaper)) {
 
         if ([string]::IsNullOrEmpty($wallpaperStyle)) {
 
@@ -302,7 +297,6 @@ Function Set-WallPaper {
             Write-Host $wallpaperStyle -ForegroundColor White
             Start-Sleep 2
         }
-
 
         # Download Wallpaper from URL
         try {
