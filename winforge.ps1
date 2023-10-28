@@ -14,14 +14,14 @@ param (
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
 
 #REMOTE USAGE
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme 1 -wallpaper 'https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg' -computerName "John-PC" -wallpaperStyle 'fill' -settings 'https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg' -apps 'https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json'
-
+# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "JeecfefC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
+# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Piggy1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
 
 # Parameter Options
 # ------------------
 # theme: - 1 for light theme, 2 for dark theme
 # wallpaper: https://imageurl.com/mywallpaper.jpg or leave blank to skip
-# computerName: "Bob's PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
+# computerName: "Bob PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
 # settings: Add a url to your O&O shutup configuration file, feel free to use the default one or alternatively leave blank to skip
 # apps: Add a url to your JSON file, check GitHub for layout of JSON file, alternatively leave blank to skip
 
