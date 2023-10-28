@@ -11,7 +11,7 @@ param (
 
 
 # You can call your winforge.ps1 script with the parameters as follows:
-# . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
+# . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob-PC" -apps "www.list.com/myapplist.json"
 
 #REMOTE USAGE
 # & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "JeecfefC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
@@ -23,7 +23,7 @@ param (
 # wallpaper: https://imageurl.com/mywallpaper.jpg or leave blank to skip
 # computerName: "Bob PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
 # settings: Add a url to your O&O shutup configuration file, feel free to use the default one or alternatively leave blank to skip
-# apps: Add a url to your JSON file, check GitHub for layout of JSON file, alternatively leave blank to skip
+# apps: Add a url to your Winget import file (JSON format), check GitHub for layout of JS/ON file, alternatively leave blank to skip
 
 function Set-RegistryProperty {
     # Example usage: Set-RegistryProperty -Path 'HKCU:\Software\Example' -Name 'SampleValue' -Value 'NewValue' -PropertyType 'String'
