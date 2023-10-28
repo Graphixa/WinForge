@@ -119,7 +119,7 @@ function Set-Checkpoint {
 
 ## DONE >>
 function Set-ComputerName {
-    if (-not [string]::IsNullOrEmpty($computerName)) {
+    if ([string]::IsNullOrEmpty($computerName)) {
         $computerName = Read-Host "Set your Computer Name:"
 
     }
@@ -173,7 +173,7 @@ Set-Theme -theme "Dark" or Set-Theme Dark
         $theme = 0  # Dark Mode
     }
     else {
-        if ((-not [string]::IsNullOrEmpty($theme)) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
+        if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
             do {
                 Clear-Host
                 Write-Host "Choose a theme option:" -ForegroundColor Yellow
@@ -250,7 +250,7 @@ Function Set-WallPaper {
         [string]$wallpaperStyle
     )
 
-    if (-not [string]::IsNullOrEmpty($wallpaper)) {
+    if ([string]::IsNullOrEmpty($wallpaper)) {
 
         Clear-Host
         Write-Host "Paste a URL for your wallpaper or press [Enter] to skip:" -ForegroundColor Yellow
@@ -262,7 +262,7 @@ Function Set-WallPaper {
     }
 
     
-    if (-not [string]::IsNullOrEmpty($wallpaperStyle)) {
+    if ([string]::IsNullOrEmpty($wallpaperStyle)) {
 
         do {
             Clear-Host
@@ -299,7 +299,7 @@ Function Set-WallPaper {
     }
 
     # 2nd Check of $wallpaper variable - if still empty, skips the function entirely.
-    if (-not [string]::IsNullOrEmpty($wallpaper)) {
+    if ([string]::IsNullOrEmpty($wallpaper)) {
 
 
         # Download Wallpaper from URL
@@ -384,7 +384,7 @@ function Install-Apps {
         [string]$apps
     )
 
-    if (-not [string]::IsNullOrEmpty($apps)) {
+    if ([string]::IsNullOrEmpty($apps)) {
         $choiceMade = $false
 
         while (-not $choiceMade) {
@@ -431,7 +431,7 @@ function Install-Apps {
     }
 
     # 2nd Check of $apps variable - if still empty, skips the function entirely.
-    if (-not [string]::IsNullOrEmpty($apps)) {
+    if ([string]::IsNullOrEmpty($apps)) {
         try {
             # Download Applist file from remote URL
             $TempDownloadPath = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $apps -Leaf)
@@ -464,7 +464,7 @@ function Install-Apps {
         $apps = Read-Host "Specify the URL to your JSON file containing the list of apps:"
     }
         
-    if (-not [string]::IsNullOrEmpty($apps)) {
+    if ([string]::IsNullOrEmpty($apps)) {
         try {
 
             # Fetch the list of apps from GitHub
@@ -511,7 +511,7 @@ function Import-Settings {
     )
 
 
-    if (-not [string]::IsNullOrEmpty($settings)) {
+    if ([string]::IsNullOrEmpty($settings)) {
         $choiceMade = $false
 
         while (-not $choiceMade) {
@@ -561,7 +561,7 @@ function Import-Settings {
 
     
     # 2nd Check of $settings variable - if still empty, skips the function entirely.
-    if (-not [string]::IsNullOrEmpty($settings)) {
+    if ([string]::IsNullOrEmpty($settings)) {
         try {
             
             # Download O&OShutUp10
@@ -639,7 +639,7 @@ function Import-RegistrySettingsOLD {
         $settings = Read-Host "URL to your settings file:"
     }
         
-    if (-not [string]::IsNullOrEmpty($settings)) {
+    if ([string]::IsNullOrEmpty($settings)) {
         try {
             
             # Use Invoke-RestMethod to fetch the file contents
