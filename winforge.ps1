@@ -209,7 +209,6 @@ Set-Theme -theme "Dark" or Set-Theme Dark
     }
     
     Clear-Host
-    Write-Host ""
     Write-Host "Setting theme..." -ForegroundColor Yellow
     Start-Sleep 2
     Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
@@ -308,6 +307,7 @@ Function Set-WallPaper {
             
             # Use Invoke-RestMethod to fetch the file contents
             Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
+            
         }
         catch {
             Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
@@ -360,11 +360,15 @@ public class Params
         $fWinIni = $UpdateIniFile -bor $SendChangeEvent
   
         $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
+
+        Clear-Host
+        Write-Host "Wallpaper import complete..." -ForegroundColor Yellow
+        Start-Sleep 2
     }
     else {
         # The user entered nothing, so skip setting the wallpaper.
         Clear-Host
-        Write-Host "Wallpaper import skipped." -ForegroundColor Yellow
+        Write-Host "Wallpaper import skipped..." -ForegroundColor Yellow
         Start-Sleep 2
     }
 }        
@@ -418,7 +422,7 @@ function Install-Apps {
     }
 
     # 2nd Check of $apps variable - if still empty, skips the function entirely.
-    if ([string]::IsNullOrEmpty($apps)) {
+    if (-not [string]::IsNullOrEmpty($apps)) {
         try {
             # Download Applist file from remote URL
             $TempDownloadPath = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $apps -Leaf)
@@ -438,6 +442,12 @@ function Install-Apps {
             Write-Host ""
             Pause
         }
+    }
+    else {
+        # The user entered nothing, so skip installing apps.
+        Clear-Host
+        Write-Host "Apps installation skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
     }
 }
 
@@ -486,8 +496,6 @@ function Install-Apps {
     }
 }
 #>
-
-
 
 function Import-Settings {
     # Example usage:
@@ -541,9 +549,8 @@ function Import-Settings {
         }
     }
 
-    
     # 2nd Check of $settings variable - if still empty, skips the function entirely.
-    if ([string]::IsNullOrEmpty($settings)) {
+    if (-not [string]::IsNullOrEmpty($settings)) {
         try {
             
             # Download O&OShutUp10
