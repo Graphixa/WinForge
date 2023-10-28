@@ -42,21 +42,56 @@ function Set-RegistryProperty {
     }
 }
 
+function Show-ASCIIArt {
+    @"
+
+------------------------------------
+
+ _ _ _ _     _____                 
+| | | |_|___|   __|___ ___ ___ ___ 
+| | | | |   |   __| . |  _| . | -_|
+|_____|_|_|_|__|  |___|_| |_  |___|
+                          |___|
+
+------------------------------------
+Automate Your Perfect Windows Setup!
+------------------------------------                          
+     
+"@
+}
+
 # ----------------------------------
 
-# NEEDS MENU and oarameters set * YES OR NO *
+## DONE >>
 function Set-Checkpoint {
-
     do {
-        $choice = Read-Host "Would you like to create a system restore point? [Advisable]"
+        Clear-Host
+        Write-Host "Do you want to create a system restore point?" -ForegroundColor Yellow
+        Write-Host "[Not required, but advisable]" -ForegroundColor Gray
+        Write-Host ""
+        Write-Host "[Y] Yes"
+        Write-Host "[N] No"
+        Write-Host ""
+        $choice = Read-Host "Enter your choice (Y/N)"
+        $choice = $choice.ToUpper()  # Convert to uppercase for case-insensitive comparison
+        if ($choice -ne "Y" -and $choice -ne "N") {
+            Clear-Host
+            Write-Host "Invalid choice. Please select a valid option (Y/N)." -ForegroundColor Red
+            Start-Sleep -Seconds 2
+        }
     } while ($choice -ne "Y" -and $choice -ne "N")
 
     if ($choice -eq "Y") {
+        Clear-Host
         Write-Host "Creating a system restore point..."
   
         try {
             Enable-ComputerRestore -Drive "$env:systemdrive"
-            Checkpoint-Computer -Description "Winforge Customisation" -RestorePointType "MODIFY_SETTINGS" -Verbose
+            Checkpoint-Computer -Description "Winforge Customization" -RestorePointType "MODIFY_SETTINGS" -Verbose
+            Clear-Host
+            Write-Host "System checkpoint created..." -ForegroundColor Yellow
+            Start-Sleep 2
+           
         }
     
         catch {
@@ -65,12 +100,15 @@ function Set-Checkpoint {
             Pause
             Return
         }
-    
-        Write-Host "System checkpoint created..." -ForegroundColor Yellow
-        Start-Sleep 1
+        
     }
-  
+    elseif ($choice -eq "N") {
+        Clear-Host
+        Write-Host "System restore point creation skipped." -ForegroundColor Yellow
+        Start-Sleep 2
+    }
 }
+
 
 ## DONE >>
 function Set-ComputerName {
@@ -94,42 +132,6 @@ function Set-ComputerName {
     Write-Host "Computer name set to: " -NoNewline -ForegroundColor Yellow
     Write-Host $computerName -NoNewline -ForegroundColor White
     Start-Sleep 4
-}
-
-function Set-ThemeOLD {
-    # Prompt for the theme preferencee if it's not provided as a parameter [1 - Use Light Theme | 0 - Use Dark Theme]
-    param (
-        [switch]$theme
-    )
-
-    if (-not $theme) {
-        do {
-            Clear-Host
-            Write-Host "Select Your Theme Colour:" -ForegroundColor Yellow
-            Write-Host ""
-            Write-Host "[0] Dark Mode"
-            Write-Host "[1] Light Mode"
-            Write-Host ""
-            $theme = Read-Host "Choose Either [0] or [1]"
-        } while ($theme -ne "0" -and $theme -ne "1")
-
-    }
-    Write-Host ""
-    Write-Host "Setting theme..."
-    Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
-    Stop-Process -Name explorer -Force
-    Start-Process explorer
-
-    if ($theme -eq "1"){
-        $themeChoice = "Light Mode"
-    }
-    else {
-        $themeChoice = "Dark Mode"
-    }
-    Clear-Host
-    Write-Host "Theme Setting: " -NoNewline -ForegroundColor Yellow
-    Write-Host $themeChoice -NoNewline -ForegroundColor White
-    Start-Sleep 1
 }
 
 ## DONE >>
@@ -362,14 +364,15 @@ public class Params
     
 }
 
-
 function Install-Apps {
     param (
         [string]$apps
     )
 
-    if (-not $apps) {
-        do {
+    if (-not $apps -eq $null) {
+        $choiceMade = $false
+
+        while (-not $choiceMade) {
             Clear-Host
             Write-Host "Do you want to install apps on the system?" -ForegroundColor Yellow
             Write-Host ""
@@ -385,32 +388,45 @@ function Install-Apps {
 
             switch ($choice) {
                 1 {
-                    $apps = "https://winstall.app/packs/hEZLyyrSB"
+                    $apps = "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
+                    $choiceMade = $true
                 }
                 2 {
-                    $customUrl = Read-Host "Enter the URL to your custom JSON file:"
+                    Clear-Host
+                    $customUrl = Read-Host "Enter the URL to your custom JSON file"
                     if ($customUrl -match "\.json$") {
                         $apps = $customUrl
+                        $choiceMade = $true
                     }
                     else {
                         Write-Host "The URL must point to a JSON file with the proper winget import schema." -ForegroundColor Red
+                        Pause
                     }
                 }
                 3 {
                     Write-Host "Skipping app installation."
+                    $choiceMade = $true
                 }
                 default {
                     Write-Host "Invalid choice. Please choose 1, 2, or 3." -ForegroundColor Red
+                    Pause
                 }
             }
-        } while ($choice -ne "1" -and $choice -ne "2" -and $choice -ne "3")
+        }
     }
 
     if (-not [string]::IsNullOrEmpty($apps)) {
         try {
-            Write-Host "Installing applications..."
+        # Download Applist file from remote URL
+        $TempDownloadPath = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $apps -Leaf)
+            
+            # Use Invoke-RestMethod to fetch the file contents
+            Invoke-RestMethod -Uri $apps -OutFile $TempDownloadPath
+
+            Clear-Host
+            Write-Host "Installing applications..." -ForegroundColor Yellow
             echo Y | winget list | Out-Null
-            winget import --import-file $apps
+            winget import --import-file $TempDownloadPath --ignore-versions --no-upgrade --accept-package-agreements --accept-source-agreements --disable-interactivity
         }
         catch {
             Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
@@ -466,7 +482,119 @@ function Install-Apps {
 }
 #>
 
-function Import-OOShutupSettings {
+function DownloadOOShutUp10 {
+    $url = "https://dl5.oo-software.com/files/ooshutup10/OOSU10.exe"
+        $downloadPath = "$env:TEMP\OOSU10.exe"
+    
+        try {
+            Write-Host "Downloading O&O ShutUp10 from the official website..."
+            Invoke-WebRequest -Uri $url -OutFile $downloadPath -UseBasicParsing
+            Write-Host "Download complete. Saved to $downloadPath."
+            
+            
+            Write-Host "Installing O&O ShutUp10 silently..."
+
+            # Define the installation command with silent options and install
+            $installArguments = "/quiet /nosrp /ignorereadonlycfg"  
+            Start-Process -FilePath $downloadPath -ArgumentList $installArguments -Wait
+    
+            Write-Host "Installation complete."
+    
+        } catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+        }
+    }
+
+function Import-Settings {
+    # Example usage:
+    # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
+
+    param (
+        [string]$settings
+    )
+   # if (-not $settings) {
+   #     $settings = Read-Host "URL to your settings file or press [Enter] to skip settings import"
+   # }
+
+
+
+   if (-not $settings -eq $null) {
+    $choiceMade = $false
+
+    while (-not $choiceMade) {
+        Clear-Host
+        Write-Host "Do you want to import O&OShutup10 Configuration?" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "[1] - Use default configuration " -NoNewline
+        Write-Host "| https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -ForegroundColor Gray
+        Write-Host "[2] - Specify your own URL " -NoNewline
+        Write-Host "| Must be a O&OShutup Configuration file in CFG format" -ForegroundColor Gray
+        Write-Host "[3] - Skip " -NoNewline
+        Write-Host  -NoNewline
+        Write-Host "| Don't import any settings configuration file" -ForegroundColor Gray
+        Write-Host ""
+        $choice = Read-Host "Choose an option [1-3]"
+
+        switch ($choice) {
+            1 {
+                $settings = "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg"
+                $choiceMade = $true
+            }
+            2 {
+                Clear-Host
+                $customUrl = Read-Host "Enter the URL to your custom O&OShutup10 Configuration (.cfg) file"
+                if ($customUrl -match "\.cfg$") {
+                    $settings = $customUrl
+                    $choiceMade = $true
+                }
+                else {
+                    Write-Host "The URL must point to a (.cfg) file with the proper O&OShutup10 configuration layout." -ForegroundColor Red
+                    Pause
+                }
+            }
+            3 {
+                Write-Host "Skipping settings configuration import."
+                $choiceMade = $true
+            }
+            default {
+                Write-Host "Invalid choice. Please choose 1, 2, or 3." -ForegroundColor Red
+                Pause
+            }
+        }
+    }
+}
+
+        
+    if (-not [string]::IsNullOrEmpty($settings)) {
+        try {
+            
+            OOShutUp10
+
+            $OOShutup10Config = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $settings -Leaf)
+            
+            # Use Invoke-RestMethod to fetch the file contents
+            Invoke-RestMethod -Uri $settings -OutFile $OOShutup10Config
+
+            Clear-Host
+            Write-Host "Configuring settings now..." -ForegroundColor Yellow
+            
+            Start-Process $OOShutup10Config $settings
+
+        }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
+    }
+    else {
+        # The user entered nothing, so skip calling your script.
+        Write-Host "Settings import skipped."
+        Start-Sleep 1
+    }
+}
+
+function Import-RegistrySettingsOLD {
     # Example usage:
     # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
 
