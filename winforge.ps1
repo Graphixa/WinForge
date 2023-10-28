@@ -224,8 +224,8 @@ Set-Theme -theme "Dark" or Set-Theme Dark
 ## DONE >>
 Function Set-WallPaper {
  
-    <#
- 
+<#
+
     .SYNOPSIS
     Applies a specified wallpaper to the current user's desktop
     
@@ -256,7 +256,7 @@ Function Set-WallPaper {
         Write-Host "Paste a URL for your wallpaper or press [Enter] to skip:" -ForegroundColor Yellow
         Write-Host "Example: https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" -ForegroundColor Gray
         Write-Host ""
-        $wallpaper = Read-Host "URL"
+        $wallpaper = Read-Host "Wallpaper URL"
 
        
     }
@@ -298,51 +298,56 @@ Function Set-WallPaper {
         Start-Sleep 2
     }
 
-    try {
-            
-        $WallpaperFolder = "$HOME\Pictures\Wallpapers"
+    # 2nd Check of $wallpaper variable - if still empty, skips the function entirely.
+    if (-not [string]::IsNullOrEmpty($wallpaper)) {
 
-        # Check if the folder exists, and if not, create it
-        if (-not (Test-Path $WallpaperFolder)) {
-            New-Item -Path $WallpaperFolder -ItemType Directory -Force | Out-Null
+
+        # Download Wallpaper from URL
+        try {
+            
+            $WallpaperFolder = "$HOME\Pictures\Wallpapers"
+
+            # Check if the folder exists, and if not, create it
+            if (-not (Test-Path $WallpaperFolder)) {
+                New-Item -Path $WallpaperFolder -ItemType Directory -Force | Out-Null
+            }
+            
+            $WallpaperDownloadPath = Join-Path -Path $WallpaperFolder -ChildPath (Split-Path -Path $wallpaper -Leaf)
+            
+            # Use Invoke-RestMethod to fetch the file contents
+            Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
         }
-            
-        $WallpaperDownloadPath = Join-Path -Path $WallpaperFolder -ChildPath (Split-Path -Path $wallpaper -Leaf)
-            
-        # Use Invoke-RestMethod to fetch the file contents
-        Invoke-RestMethod -Uri $wallpaper -OutFile $wallpaperDownloadPath
-    }
-    catch {
-        Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
-        Write-Host ""
-        Pause
-    }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
 
-    $Style = Switch ($WallpaperStyle) {
+        $Style = Switch ($WallpaperStyle) {
   
-        "Fill" { "10" }
-        "Fit" { "6" }
-        "Stretch" { "2" }
-        "Tile" { "0" }
-        "Center" { "0" }
-        "Span" { "22" }
+            "Fill" { "10" }
+            "Fit" { "6" }
+            "Stretch" { "2" }
+            "Tile" { "0" }
+            "Center" { "0" }
+            "Span" { "22" }
   
-    }
+        }
  
-    If ($Style -eq "Tile") {
+        If ($Style -eq "Tile") {
  
-        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
-        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force | Out-Null
+            New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
+            New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force | Out-Null
  
-    }
-    Else {
+        }
+        Else {
  
-        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
-        New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force | Out-Null
+            New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
+            New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force | Out-Null
  
-    }
+        }
  
-    Add-Type -TypeDefinition @" 
+        Add-Type -TypeDefinition @" 
 using System; 
 using System.Runtime.InteropServices;
   
@@ -356,21 +361,22 @@ public class Params
 }
 "@ 
   
-    $SPI_SETDESKWALLPAPER = 0x0014
-    $UpdateIniFile = 0x01
-    $SendChangeEvent = 0x02
+        $SPI_SETDESKWALLPAPER = 0x0014
+        $UpdateIniFile = 0x01
+        $SendChangeEvent = 0x02
   
-    $fWinIni = $UpdateIniFile -bor $SendChangeEvent
+        $fWinIni = $UpdateIniFile -bor $SendChangeEvent
   
-    $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
-}
-        
-else {
-    # The user entered nothing, so skip setting the wallpaper.
-    Clear-Host
-    Write-Host "Wallpaper import skipped." -ForegroundColor Yellow
-    Start-Sleep 2
-}
+        $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
+    }
+    else {
+        # The user entered nothing, so skip setting the wallpaper.
+        Clear-Host
+        Write-Host "Wallpaper import skipped." -ForegroundColor Yellow
+        Start-Sleep 2
+    }
+}        
+
     
 
 function Install-Apps {
@@ -424,6 +430,7 @@ function Install-Apps {
         }
     }
 
+    # 2nd Check of $apps variable - if still empty, skips the function entirely.
     if (-not [string]::IsNullOrEmpty($apps)) {
         try {
             # Download Applist file from remote URL
@@ -552,7 +559,8 @@ function Import-Settings {
         }
     }
 
-        
+    
+    # 2nd Check of $settings variable - if still empty, skips the function entirely.
     if (-not [string]::IsNullOrEmpty($settings)) {
         try {
             
