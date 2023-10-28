@@ -9,6 +9,14 @@ param (
     [string]$apps
 )
 
+Write-Host "Defined: $theme"
+Write-Host "Defined: $computerName"
+Write-Host "Defined: $wallpaper"
+Write-Host "Defined: $wallpaperStyle"
+Write-Host "Defined: $settings"
+Write-Host "Defined: $apps"
+Pause
+
 # You can call your winforge.ps1 script with the parameters as follows:
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob's PC" -apps "www.list.com/myapplist.json"
 
