@@ -672,9 +672,9 @@ DeployAll
 Clear-Host
 Write-Host @"
 
-        =======================
-           WINFORGE COMPLETE  
-        =======================
+     =======================
+        WINFORGE COMPLETE  
+     =======================
 
 ⠀⠀⠀⠀⠀⠀⠀⢰⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⡄⠀⠀⠀⠀⠀
 ⠀⠹⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢠⣄⡀⠀⠀
@@ -687,11 +687,11 @@ Write-Host @"
 ⠀⠀⠀⠀⠀⠀⣀⣀⣈⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣁⣀⣀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀
 
-           Thanks for Using
+        Thanks for Using
 
-               -------
+             -------
 
-          Github.com/graphixa
+       Github.com/graphixa
 
 "@
 Write-Host ""
