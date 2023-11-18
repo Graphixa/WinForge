@@ -85,9 +85,4 @@ Feel free to fork it and make it your own!
 - We expressly disclaim any responsibility for the code contained outside of this GitHub repository.
 - The use of this script is at your sole risk. We assume zero liability for any legal consequences or implications arising from its use or the use of any scripts that are remotely executed by this script.
 
-
-## More Information
-
-For more information, visit our website: [Your Website](https://www.yourwebsite.com).
-
 Enjoy configuring Windows with ease using Winforge!
