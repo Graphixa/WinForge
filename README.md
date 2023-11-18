@@ -27,6 +27,8 @@ You can execute the script remotely by running the following in Powershell as ad
 irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex
 ```
 
+The script will prompt for your options, refer to the [Paramater Options](https://github.com/Graphixa/WinForge/blob/main/README.md#parameter-options) for more information as to what these do.
+
 ## Running the Script with Parameters ⚡
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
