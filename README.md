@@ -5,7 +5,7 @@ Winforge is a powerful PowerShell script designed to simplify and enhance the pr
 
 - **Effortless Configuration:** Winforge offers a user-friendly approach to configuring Windows machines, reducing complexity and saving time.
 - **Single-Line Deployment:** Customise parameters so you can deploy your system settings through a single line.
-- **Automation:** Automate repetitive tasks and ensure consistency across your Windows infrastructure.
+- **Automation:** Automate the process of setting up your Windows Machine, Run the Script, input your options and you're done.
 - **No-Download:** No need to download and install, just remote execute and include your own URL's to your own configuration files.
 - **Open Source:** Winforge is open-source and available for you to use, modify, and contribute to.
 
