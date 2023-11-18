@@ -14,7 +14,7 @@ Winforge is a PowerShell script designed to simplify and enhance the process of 
 - Windows 11 (Can be run on Windows 10 but Winget must be installed)
 - **Winget** must be installed to install applications using the script
 
-## Getting Started
+# Running the Script 💻
 
 To get started with Winforge, ensure that you are able to run Powershell scripts on your system:
 
@@ -22,19 +22,17 @@ Open Powershell as administrator and run the following command:
 
 ``set-executionpolicy bypass``
 
-## Running the Script 💻
-
 You can execute the script remotely by running the following:
 
 ``irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex``
 
-## Running the Script w/ Parameters ⚡
+# Running the Script with Parameters ⚡
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
 
 - Refer to the **Paramater Options** and modify the parameter options to your own config files, urls, options and wallpaper.
 
-Use the following as an example on how to run the script remotely - Make sure to replace with your own options:
+Use the following as an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
 
 ``& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"``
 
