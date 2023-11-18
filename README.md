@@ -27,7 +27,7 @@ You can execute the script remotely by running the following in Powershell as ad
 irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex
 ```
 
-### Running the Script with Parameters ⚡
+## Running the Script with Parameters ⚡
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
 
@@ -36,7 +36,7 @@ The best part about WinForge is you can design your own single-line command to r
 
 The following is an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
 
-**EXAMPLE SYNTAX**:
+### EXAMPLE SYNTAX
 ```
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme "dark" -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json" -activate "yes"
 ```
