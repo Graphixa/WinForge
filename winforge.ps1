@@ -115,6 +115,7 @@ function Set-Checkpoint {
         Clear-Host
         Write-Host "System restore point creation skipped." -ForegroundColor Yellow
         Start-Sleep 2
+        Clear-Host
     }
 }
 
