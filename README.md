@@ -61,8 +61,8 @@ The following is an example of the syntax for running Winforge with predefined p
 
 
 ## Creating Your Own Apps Configuration
-
-To create your own apps configuration do the following:
+> [!TIP]
+> To create your own apps configuration do the following:
 - Goto [Winstall.app](https://winstall.app/), and create your own custom app list
 - Export your applist as json file
 - Upload to your JSON applist file to your own Github, Google Drive, Dropbox, or other cloud storage provider
@@ -70,7 +70,8 @@ To create your own apps configuration do the following:
 
 
 ## Creating your own Settings Configuration
-
+> [!TIP]
+> To create your own system configuration file do the following:
 - Download [O&OShutu10](https://www.oo-software.com/en/shutup10)
 - Change your settings to how you like your windows to be configured
 - Export your configuration to the .CFG file
