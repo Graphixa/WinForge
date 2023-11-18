@@ -119,8 +119,9 @@ function Set-Checkpoint {
 }
 
 function Set-ComputerName {
-    Clear-Host
+    
     if ([string]::IsNullOrEmpty($computerName)) {
+        Clear-Host
         $computerName = Read-Host "Set your Computer Name:"
 
     }
