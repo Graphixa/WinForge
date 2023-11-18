@@ -66,7 +66,7 @@ The following is an example of the syntax for running Winforge with predefined p
 - Goto [Winstall.app](https://winstall.app/), and create your own custom app list
 - Export your applist as json file
 - Upload to your JSON applist file to your own Github, Google Drive, Dropbox, or other cloud storage provider
-- Share a public link and replace the URL in the ***-apps*** option 
+- Share a public link and replace the URL in the ***-apps*** option with your own
 
 
 ## Creating your own Settings Configuration
