@@ -14,7 +14,7 @@ Winforge is a PowerShell script designed to simplify and enhance the process of 
 - Windows 11 (Can be run on Windows 10 but Winget must be installed)
 - **Winget** must be installed to install applications using the script
 
-# Running the Script 💻
+## Running the Script 💻
 
 To get started with Winforge, ensure that you are able to run Powershell scripts on your system:
 
@@ -26,7 +26,7 @@ You can execute the script remotely by running the following:
 
 ``irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex``
 
-# Running the Script with Parameters ⚡
+### Running the Script with Parameters ⚡
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
 
