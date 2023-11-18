@@ -1,4 +1,4 @@
-# Winforge ⚒️ -  Forge Your Own System
+# Winforge -  Forge Your Own System ⚒️
 Winforge is a PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to automate your perfect setup on a fresh install through a single command line.
 
 
