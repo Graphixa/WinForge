@@ -29,7 +29,7 @@ The best part about WinForge is you can design your own single-line command to r
 
 Refer to the **Paramater Options** and modify the parameter options to your own config files, urls, options and wallpaper.
 
-Use the following format to run the script remotely:
+Use the following as an example on how to run the script remotely - Make sure to replace with your own options:
 
 ``& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"``
 
