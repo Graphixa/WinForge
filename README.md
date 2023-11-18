@@ -66,7 +66,7 @@ The following is an example of the syntax for running Winforge with predefined p
 - Goto [Winstall.app](https://winstall.app/), and create your own custom app list
 - Export your applist as json file
 - Upload to your JSON applist file to your own Github, Google Drive, Dropbox, or other cloud storage provider
-- Share a public link and replace the URL in the **-apps* option 
+- Share a public link and replace the URL in the **-apps** option 
 
 
 ## Creating your own Settings Configuration
@@ -76,7 +76,7 @@ The following is an example of the syntax for running Winforge with predefined p
 - Change your settings to how you like your windows to be configured
 - Export your configuration to the .CFG file
 - Upload to your .CFG file to your own Github, Google Drive, Dropbox, or other cloud storage provider
-- Share a public link and replace the URL in the **-settings* option with your own
+- Share a public link and replace the URL in the **-settings** option with your own
 
 
 ## License 
