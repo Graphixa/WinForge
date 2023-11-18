@@ -755,10 +755,8 @@ Write-Host @"
   ⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀
 
           Thanks for Using
-
-              -------
-
-        Github.com/graphixa
+               -------
+         Github.com/graphixa
 
 "@
 Write-Host ""
