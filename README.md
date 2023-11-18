@@ -13,14 +13,16 @@ Winforge is a PowerShell script designed to simplify and enhance the process of 
 
 - Windows 11 (Can be run on Windows 10 but Winget must be installed)
 - **Winget** must be installed to install applications using the script
+- Able to run powershell scripts on your system - use the following to enable running of scripts:
+  - ``set-executionpolicy bypass``
 
 ## Running the Script 💻
 
-To get started with Winforge, ensure that you are able to run Powershell scripts on your system:
+To get started with Winforge, e
 
 Open Powershell as administrator and run the following command:
 
-``set-executionpolicy bypass``
+
 
 You can execute the script remotely by running the following:
 
