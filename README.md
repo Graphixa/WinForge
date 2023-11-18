@@ -14,21 +14,18 @@ Winforge is a PowerShell script designed to simplify and enhance the process of 
 - Windows 11 (Can be run on Windows 10 but Winget must be installed)
 - **Winget** must be installed to install applications using the script
 - Able to run powershell scripts on your system - use the following to enable running of scripts:
-  - ```
-    set-executionpolicy bypass
-    ```
+
+To enable running of powershell scripts on your system, open Powershell as administrator and run the following command:
+```
+set-executionpolicy bypass
+```
 
 ## Running the Script 💻
 
-To get started with Winforge, e
-
-Open Powershell as administrator and run the following command:
-
-
-
-You can execute the script remotely by running the following:
-
-``irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex``
+You can execute the script remotely by running the following in Powershell as administrator:
+```
+irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex
+```
 
 ### Running the Script with Parameters ⚡
 
@@ -38,7 +35,9 @@ The best part about WinForge is you can design your own single-line command to r
 
 Use the following as an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
 
-``& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"``
+```
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
+```
 
 ### Parameter Options
 - **theme:** (Options: light, dark, 1, 2) - 1 = light theme, 2 = dark theme - Choose an option to apply your preferred theme, or remove parameter to skip
