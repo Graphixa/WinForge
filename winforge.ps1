@@ -741,11 +741,11 @@ Write-Host @"
   ⠀⠀⠀⠀⠀⠀⣀⣀⣈⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣉⣁⣀⣀⠀⠀⠀⠀
   ⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀
 
-            Thanks for Using
+              Thanks for Using
 
-               -------
+                  -------
 
-        Github.com/graphixa
+          Github.com/graphixa
 
 "@
 Write-Host ""
