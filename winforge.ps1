@@ -123,7 +123,8 @@ function Set-ComputerName {
     
     if ([string]::IsNullOrEmpty($computerName)) {
         Clear-Host
-        $computerName = Read-Host "Set your Computer Name:"
+        Write-Host "Set a computer name [Leave blank to skip]"
+        $computerName = Read-Host "Computer Name:"
 
     }
     if ([string]::IsNullOrEmpty($computerName)){
