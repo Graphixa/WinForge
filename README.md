@@ -92,7 +92,8 @@ Feel free to fork it and make it your own!
 
 - Special thanks to [MassGrave](https://github.com/massgravel) for their work on (MAS).
 
-**Disclaimer:**
+## Disclaimer
+
 - This script incorporates no code from Mass Activation scripts; all code is remotely executed from the [Microsoft-Activation-Scripts](https://github.com/massgravel/Microsoft-Activation-Scripts) GitHub repository.
 - We expressly disclaim any responsibility for the code contained outside of this GitHub repository.
 - The use of this script is at your sole risk. We assume zero liability for any legal consequences or implications arising from its use or the use of any scripts that are remotely executed by this script.
