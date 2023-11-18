@@ -126,10 +126,18 @@ function Set-ComputerName {
         $computerName = Read-Host "Set your Computer Name:"
 
     }
-    Write-Host ""
-    Write-Host "Setting computer name now..."
+    if ([string]::IsNullOrEmpty($computerName)){
+        # The user entered nothing, so skip setting the computer name.
+        Clear-Host
+        Write-Host "Set computer name skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return
+    }
+
     
     try {
+        Clear-Host
+        Write-Host "Setting computer name now..."
         Rename-Computer -NewName $computerName -Force
         Start-Sleep 2
     }
