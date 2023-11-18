@@ -1,5 +1,5 @@
 #Requires -RunAsAdministrator
-Set-ExecutionPolicy Bypass
+
 
 param (
     [string]$theme,
