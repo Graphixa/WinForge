@@ -1,5 +1,5 @@
-## Overview
-Winforge is a powerful PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to automate your perfect setup on a fresh install through a single command line.
+# Overview
+Winforge is a PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to automate your perfect setup on a fresh install through a single command line.
 
 ## Features
 
@@ -9,29 +9,37 @@ Winforge is a powerful PowerShell script designed to simplify and enhance the pr
 - **No-Download:** No need to download and install, just remote execute and include your own URL's to your own configuration files.
 - **Open Source:** Winforge is open-source and available for you to use, modify, and contribute to.
 
-## Getting Started
+## Requirements
 
-To get started with Winforge, ensure that you are able to run Powershell scripts on your system:
+- Windows 11 (Can be run on Windows 10 but Winget must be installed)
+- **Winget** must be installed to install applications using the script
+- Able to run powershell scripts on your system - use the following to enable running of scripts:
 
-Open powershell as administrator and run the following command:
+To enable running of powershell scripts on your system, open Powershell as administrator and run the following command:
+```
+set-executionpolicy bypass
+```
 
-``set-executionpolicy bypass``
+## Running the Script 💻
 
-## Running the Script
+You can execute the script remotely by running the following in Powershell as administrator:
+```
+irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex
+```
 
-You can execute the script remotely by running the following:
-
-``irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex``
-
-## Running the Script w/ Parameters
+### Running the Script with Parameters ⚡
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
 
-Refer to the **Paramater Options** and modify the parameter options to your own config files, urls, options and wallpaper.
+- Refer to the [Paramater Options](https://github.com/Graphixa/WinForge/blob/main/README.md#parameter-options) and modify the example syntax below to include links to your own config files, styles, options and wallpaper.
+- You will be prompted for any variables that haven't been referenced in the single-line command.
 
-Use the following as an example on how to run the script remotely - Make sure to replace with your own options:
+The following is an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
 
-``& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"``
+**EXAMPLE SYNTAX**:
+```
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
+```
 
 ### Parameter Options
 - **theme:** (Options: light, dark, 1, 2) - 1 = light theme, 2 = dark theme - Choose an option to apply your preferred theme, or remove parameter to skip
@@ -50,7 +58,7 @@ To create your own apps configuration do the following:
 - Upload to your JSON applist file to your own Github, Google Drive, Dropbox, or other cloud storage provider
 - Share a public link and replace the URL in the **-apps* option 
 
-## Creating your own Settings Configuration.
+## Creating your own Settings Configuration
 
 - Download [O&OShutu10](https://www.oo-software.com/en/shutup10)
 - Change your settings to how you like your windows to be configured
