@@ -36,21 +36,19 @@ irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex
 
 ## Running the Script with Parameters ⚡
 
-The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
-
-- Refer to the [Paramater Options](https://github.com/Graphixa/WinForge/blob/main/README.md#parameter-options) and modify the example syntax below to include links to your own config files, styles, options and wallpaper.
-- You will be prompted for any variables that haven't been referenced in the single-line command.
+The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the parameter options listed below with your own URL's or options.
+- Refer to the [Paramater Options](https://github.com/Graphixa/WinForge/blob/main/README.md#parameter-options) and modify the example syntax below to include links to your own config files, styles, options, and wallpaper.
+- Any parameters not referenced in the single-line command will prompt you during execution for your choices.
 
 The following is an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
 
-
-### EXAMPLE SYNTAX
+#### EXAMPLE SYNTAX
 ```
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme "dark" -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json" -activate "yes"
 ```
 
 
-### PARAMETER OPTIONS
+#### PARAMETER OPTIONS
 - **theme:** (Options: light, dark, 1, 2) - 1 = light theme, 2 = dark theme - Choose an option to apply your preferred theme, or remove parameter to skip
 - **wallpaper:** (Example: [https://imageurl.com/mywallpaper.jpg](https://imageurl.com/mywallpaper.jpg)) - Choose a URL to apply your wallpaper from, or remove parameter to skip
 - **wallpaperStyle:** (Options: fill, fit, stretch, tile, center) - choose the style for displaying the wallpaper - must be selected if wallpaper parameter is used
