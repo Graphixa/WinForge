@@ -31,9 +31,10 @@ irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
 
-- Refer to the [Paramater Options](https://github.com/Graphixa/WinForge/blob/main/README.md#parameter-options) and modify the parameter options to your own config files, urls, options and wallpaper.
+- Refer to the [Paramater Options](https://github.com/Graphixa/WinForge/blob/main/README.md#parameter-options) and modify the example syntax below to include links to your own config files, styles, options and wallpaper.
+- You will be prompted for any variables that haven't been referenced in the single-line command.
 
-Use the following as an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
+The following is an example of the syntax for running Winforge with predefined parameters to deploy your system with a single line - **Replace with your own options:**
 
 **EXAMPLE SYNTAX**:
 ```
