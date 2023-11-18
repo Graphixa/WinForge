@@ -6,7 +6,8 @@ param (
     [string]$wallpaper,
     [string]$wallpaperStyle,
     [string]$settings,
-    [string]$apps
+    [string]$apps,
+    [string]$activate
 )
 
 
@@ -14,16 +15,17 @@ param (
 # . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob-PC" -apps "www.list.com/myapplist.json"
 
 #REMOTE USAGE
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "JeecfefC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Piggy1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
+# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "TestPC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
+# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Winforge-1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate no" 
 
 # Parameter Options
 # ------------------
-# theme: - 1 for light theme, 2 for dark theme
-# wallpaper: https://imageurl.com/mywallpaper.jpg or leave blank to skip
-# computerName: "Bob PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
+# theme: (Options: light, dark, 1 or 2)  1 = light theme, 2 = dark theme
+# wallpaper: (Example: https://imageurl.com/mywallpaper.jpg or leave blank to skip
+# computerName: "Example: Bob PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
 # settings: Add a url to your O&O shutup configuration file, feel free to use the default one or alternatively leave blank to skip
 # apps: Add a url to your Winget import file (JSON format), check GitHub for layout of JS/ON file, alternatively leave blank to skip
+# activate: (Options: Yes, No, Y or N) - Enter Yes or No to select whether you want to activate windows using massgravel's Mass Activation Scripts (MAS)
 
 function Set-RegistryProperty {
     # Example usage: Set-RegistryProperty -Path 'HKCU:\Software\Example' -Name 'SampleValue' -Value 'NewValue' -PropertyType 'String'
@@ -156,10 +158,6 @@ Set-Theme -theme "Light" or Set-Theme Light
 Set-Theme -theme "Dark" or Set-Theme Dark
 #>
 
-    # [CmdletBinding()]
-    # param (
-    #     [string]$theme
-    # )
 
     if ($theme -eq "Light") {
         $theme = 1  # Light Mode
@@ -607,18 +605,16 @@ function Import-Settings {
     }
 }
 
-function Import-RegistrySettingsOLD {
+function Import-RegistrySettings {
     # Example usage:
     # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
 
-    param (
-        [string]$settings
-    )
-    if (-not $settings) {
-        $settings = Read-Host "URL to your settings file:"
+    if ([string]::IsNullOrEmpty($RegistrySettings)) {
+        Write-Host "Url to your registry settings file (JSON format) or leave blank to skip"
+        $RegistrySettings = Read-Host "URL:"
     }
         
-    if ([string]::IsNullOrEmpty($settings)) {
+    if (-not [string]::IsNullOrEmpty($registrysettings)) {
         try {
             
             # Use Invoke-RestMethod to fetch the file contents
@@ -657,14 +653,70 @@ function Import-RegistrySettingsOLD {
     }
 }
 
+function Install-MAS {
+
+    if ($activate -eq "yes") {
+        $activate = "Y"
+    }
+    if ($activate -eq "no") {
+        $activate = "N"
+    }
+
+    if ([string]::IsNullOrEmpty($activate)) {
+        do {
+            Clear-Host
+            Write-Host "Do you want to activate Windows using Microsoft Activation Scripts (MAS)?" -ForegroundColor Yellow
+            Write-Host "[Maintained by massgravel: https://github.com/massgravel/Microsoft-Activation-Scripts]" -ForegroundColor Gray
+            Write-Host ""
+            Write-Host "[Y] Yes"
+            Write-Host "[N] No"
+            Write-Host ""
+            $activate = Read-Host "Enter your choice (Y/N)"
+            $activate = $activate.ToUpper()  # Convert to uppercase for case-insensitive comparison
+            if ($activate -ne "Y" -and $activate -ne "N") {
+                Clear-Host
+                Write-Host "Invalid choice. Please select a valid option (Y/N)." -ForegroundColor Red
+                Start-Sleep -Seconds 2
+            }
+        } while ($activate -ne "Y" -and $activate -ne "N")
+    }
+
+    if ($activate -ne "Y") {      
+        Write-Host "Activation Scripts skipped."
+        Start-Sleep 2
+        return
+    }
+    
+    if ($activate -eq "Y") {
+        
+
+        try {
+            irm https://massgrave.dev/get | iex
+        }
+    
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Write-host "There was a problem executing the Mass Activation Scripts"
+            Write-host "Goto https://massgrave.dev/ for more information and troubleshooting"
+            Pause
+            Return
+        }
+   
+    }
+}
+
+
+
 function DeployAll {
     Show-ASCIIArt
     Set-Checkpoint
+    Set-ComputerName
+    Install-MAS
     Set-Theme
     Set-WallPaper
-    Set-ComputerName
     Install-Apps
-    Import-Settings  
+    Import-Settings
 }
 
 DeployAll
