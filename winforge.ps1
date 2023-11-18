@@ -1,4 +1,5 @@
 #Requires -RunAsAdministrator
+Set-ExecutionPolicy Bypass
 
 param (
     [string]$theme,
@@ -24,8 +25,8 @@ param (
 # wallpaper: (Example: https://imageurl.com/mywallpaper.jpg or leave blank to skip
 # computerName: "Example: Bob PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
 # settings: Add a url to your O&O shutup configuration file, feel free to use the default one or alternatively leave blank to skip
-# apps: Add a url to your Winget import file (JSON format), check GitHub for layout of JS/ON file, alternatively leave blank to skip
-# activate: (Options: Yes, No, Y or N) - Enter Yes or No to select whether you want to activate windows using massgravel's Mass Activation Scripts (MAS)
+# apps: Add a url to your Winget import file (JSON format), check GitHub for layout of JSON file, alternatively leave blank to skip
+# activate: (Options: Yes, No, Y or N) - Enter Yes or No to select whether you want to activate windows using massgrave's Mass Activation Scripts (MAS)
 
 function Set-RegistryProperty {
     # Example usage: Set-RegistryProperty -Path 'HKCU:\Software\Example' -Name 'SampleValue' -Value 'NewValue' -PropertyType 'String'
@@ -666,7 +667,7 @@ function Install-MAS {
         do {
             Clear-Host
             Write-Host "Do you want to activate Windows using Microsoft Activation Scripts (MAS)?" -ForegroundColor Yellow
-            Write-Host "[Maintained by massgravel: https://github.com/massgravel/Microsoft-Activation-Scripts]" -ForegroundColor Gray
+            Write-Host "[Maintained by massgrave: https://github.com/massgravel/Microsoft-Activation-Scripts]" -ForegroundColor Gray
             Write-Host ""
             Write-Host "[Y] Yes"
             Write-Host "[N] No"
