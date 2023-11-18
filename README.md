@@ -1,5 +1,5 @@
-## Overview
-Winforge is a powerful PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to automate your perfect setup on a fresh install through a single command line.
+# Overview
+Winforge is a PowerShell script designed to simplify and enhance the process of configuring Windows machines. It provides a straightforward and efficient way to manage and apply system settings, making it easier than ever to automate your perfect setup on a fresh install through a single command line.
 
 ## Features
 
@@ -9,25 +9,30 @@ Winforge is a powerful PowerShell script designed to simplify and enhance the pr
 - **No-Download:** No need to download and install, just remote execute and include your own URL's to your own configuration files.
 - **Open Source:** Winforge is open-source and available for you to use, modify, and contribute to.
 
+## Requirements
+
+- Windows 11 (Can be run on Windows 10 but Winget must be installed)
+- **Winget** must be installed to install applications using the script
+
 ## Getting Started
 
 To get started with Winforge, ensure that you are able to run Powershell scripts on your system:
 
-Open powershell as administrator and run the following command:
+Open Powershell as administrator and run the following command:
 
 ``set-executionpolicy bypass``
 
-## Running the Script
+## Running the Script 💻
 
 You can execute the script remotely by running the following:
 
 ``irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1 | iex``
 
-## Running the Script w/ Parameters
+## Running the Script w/ Parameters ⚡
 
 The best part about WinForge is you can design your own single-line command to run on any Windows machine. Simply replace any of the options in the parameters below with your own URL's or options [Parameter options listed below].
 
-Refer to the **Paramater Options** and modify the parameter options to your own config files, urls, options and wallpaper.
+- Refer to the **Paramater Options** and modify the parameter options to your own config files, urls, options and wallpaper.
 
 Use the following as an example on how to run the script remotely - Make sure to replace with your own options:
 
@@ -50,7 +55,7 @@ To create your own apps configuration do the following:
 - Upload to your JSON applist file to your own Github, Google Drive, Dropbox, or other cloud storage provider
 - Share a public link and replace the URL in the **-apps* option 
 
-## Creating your own Settings Configuration.
+## Creating your own Settings Configuration
 
 - Download [O&OShutu10](https://www.oo-software.com/en/shutup10)
 - Change your settings to how you like your windows to be configured
