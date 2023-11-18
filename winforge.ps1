@@ -86,7 +86,7 @@ function Set-Checkpoint {
         if ($choice -ne "Y" -and $choice -ne "N") {
             Clear-Host
             Write-Host "Invalid choice. Please select a valid option (Y/N)." -ForegroundColor Red
-            Start-Sleep -Seconds 2
+            Start-Sleep 2
         }
     } while ($choice -ne "Y" -and $choice -ne "N")
 
@@ -128,7 +128,7 @@ function Set-ComputerName {
     
     try {
         Rename-Computer -NewName $computerName -Force
-        Start-Sleep 3
+        Start-Sleep 2
     }
     catch {
         Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
@@ -138,7 +138,7 @@ function Set-ComputerName {
     Clear-Host
     Write-Host "Computer name set to: " -NoNewline -ForegroundColor Yellow
     Write-Host $computerName -NoNewline -ForegroundColor White
-    Start-Sleep 4
+    Start-Sleep 2
 }
 
 ## DONE >>
@@ -189,7 +189,7 @@ Set-Theme -theme "Dark" or Set-Theme Dark
                     Default {
                         Clear-Host
                         Write-Host "Invalid choice. Please select a valid number (1-2)." -ForegroundColor Red
-                        Start-Sleep -Seconds 2
+                        Start-Sleep 3
                     }
                 }
             } while ($choice -ne "1" -and $choice -ne "2")
@@ -267,7 +267,7 @@ Function Set-WallPaper {
                     Default {
                         Clear-Host
                         Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
-                        Start-Sleep -Seconds 2
+                        Start-Sleep 3
                         $StyleChoice = $null
                     }
                 }
