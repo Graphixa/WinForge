@@ -8,7 +8,8 @@ param (
     [string]$wallpaperStyle,
     [string]$settings,
     [string]$apps,
-    [string]$activate
+    [string]$activate,
+    [string]$export
 )
 
 
@@ -117,6 +118,13 @@ function Set-Checkpoint {
         Start-Sleep 2
         Clear-Host
     }
+}
+
+function Get-Parameters {
+
+# Checks if Parameters are listed
+
+
 }
 
 function Set-ComputerName {
