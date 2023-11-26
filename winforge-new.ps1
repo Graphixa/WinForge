@@ -242,13 +242,13 @@ function Set-Theme {
 #>
 
     if ($theme -eq "Light") {
-        $global:theme = 1  # Light Mode
+        $theme = 1  # Light Mode
     }
     if ($theme -eq "Dark") {
-        $global:theme = 0  # Dark Mode
+        $theme = 0  # Dark Mode
     }
 
-    if (([string]::IsNullOrEmpty($global:theme)) -or ($global:theme -ne "1") -or ($global:theme -ne "0")) {
+    if ([string]::IsNullOrEmpty($theme)) {
 
         if ($bypass) {
             return
@@ -264,10 +264,10 @@ function Set-Theme {
 
             switch ($choice) {
                 "1" {
-                    $global:theme = "1"  # Light Mode
+                    $theme = "1"  # Light Mode
                 }
                 "2" {
-                    $global:theme = "0"  # Dark Mode
+                    $theme = "0"  # Dark Mode
                 }
                 Default {
                     Clear-Host
@@ -278,7 +278,7 @@ function Set-Theme {
         } while ($choice -ne "1" -and $choice -ne "2")
     } 
 
-    if ([string]::IsNullOrEmpty($global:theme)){
+    if ([string]::IsNullOrEmpty($theme)){
         # The user entered nothing, so skip setting the computer name.
         Clear-Host
         Write-Host "Theme setting skipped..." -ForegroundColor Yellow
@@ -286,17 +286,17 @@ function Set-Theme {
         Return
     }
 
-    if (-not [string]::IsNullOrEmpty($global:theme)) {
+    if (-not [string]::IsNullOrEmpty($theme)) {
     
         try {
             Clear-Host
             Write-Host "Setting theme..." -ForegroundColor Yellow
             Start-Sleep 2
-            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $global:theme -PropertyType 'Dword' | Out-Null
+            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword' | Out-Null
             Stop-Process -Name explorer -Force
             Start-Process explorer
 
-            $themeChoice = if ($global:theme -eq 1) {
+            $themeChoice = if ($theme -eq 1) {
                 "Light Mode"
             }
             else {
