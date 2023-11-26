@@ -126,7 +126,7 @@ function Set-Checkpoint {
     if ([string]::IsNullOrEmpty($checkpoint)) {
 
         if ($bypass) {
-            return
+            Return
         }
 
         do {
@@ -251,7 +251,7 @@ function Set-Theme {
     if ([string]::IsNullOrEmpty($theme)) {
 
         if ($bypass) {
-            return
+            Return
         }
         do {
             Clear-Host
@@ -338,7 +338,7 @@ function Set-WallPaper {
     if ([string]::IsNullOrEmpty($wallpaper) -or -not ($wallpaper -match '^https?://')) {
     
         if ($bypass) {
-            return
+            Return
         }
 
         do {
@@ -498,13 +498,11 @@ public class Params
 
 function Install-Apps {
 
-
-
     if ([string]::IsNullOrEmpty($apps) -or -not ($apps -match '^https?://')) {
         $choiceMade = $false
 
         if ($bypass) {
-            return
+            Return
         }
 
         while (-not $choiceMade) {
@@ -582,13 +580,98 @@ function Install-Apps {
 
 }
 
+function Import-DefaultAppSettings {
+
+    if ([string]::IsNullOrEmpty($appDefaults) -or -not ($appDefaults -match '^https?://')) {
+        $choiceMade = $false
+
+        if ($bypass) {
+            Return
+        }
+
+        while (-not $choiceMade) {
+            Clear-Host
+            Write-Host "Do you want change the default app associations?" -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "[1] - Use WinForge default app associations " -NoNewline
+            Write-Host "| https://winstall.app/packs/hEZLyyrSB" -ForegroundColor Gray
+            Write-Host "[2] - Specify your own URL " -NoNewline
+            Write-Host "| Must be a winget import file in JSON format" -ForegroundColor Gray
+            Write-Host "[3] - Skip " -NoNewline
+            Write-Host  -NoNewline
+            Write-Host "| Don't install any apps" -ForegroundColor Gray
+            Write-Host ""
+            $choice = Read-Host "Choose an option [1-3]"
+
+            switch ($choice) {
+                1 {
+                    $apps = "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json"
+                    $choiceMade = $true
+                }
+                2 {
+                    Clear-Host
+                    $customUrl = Read-Host "Enter the URL to your custom JSON file"
+                    if ($customUrl -match "\.json$") {
+                        $apps = $customUrl
+                        $choiceMade = $true
+                    }
+                    else {
+                        Write-Host "The URL must point to a JSON file with the proper winget import schema." -ForegroundColor Red
+                        Pause
+                    }
+                }
+                3 {
+                    $choiceMade = $true
+                }
+                default {
+                    Write-Host "Invalid choice. Please choose 1, 2, or 3." -ForegroundColor Red
+                    Pause
+                }
+            }
+        }
+    }
+
+    if ([string]::IsNullOrEmpty($apps)){
+        # The user entered nothing, so skip installing apps.
+        Clear-Host
+        Write-Host "Apps installation skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return
+    }
+
+    # 2nd Check of $apps variable - if still empty, skips the function entirely.
+    if (-not [string]::IsNullOrEmpty($apps)) {
+        try {
+            # Download Applist file from remote URL
+            $TempDownloadPath = Join-Path -Path $env:TEMP -ChildPath (Split-Path -Path $apps -Leaf)
+            
+            # Use Invoke-RestMethod to fetch the file contents
+            Invoke-RestMethod -Uri $apps -OutFile $TempDownloadPath
+
+            Clear-Host
+            Write-Host "Installing applications..." -ForegroundColor Yellow
+            
+            #echo Y | winget list | Out-Null  # uses old Alias 'echo' removed for future compatability
+            Write-Output Y | winget list | Out-Null
+            winget import --import-file $TempDownloadPath --ignore-versions --no-upgrade --accept-package-agreements --accept-source-agreements --disable-interactivity
+        }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
+    }
+
+    
+}
+
 function Import-Settings {
 
     if ([string]::IsNullOrEmpty($settings) -or -not ($settings -match '^https?://')) {
         $choiceMade = $false
         
         if ($bypass) {
-            return
+            Return
         }
 
         while (-not $choiceMade) {
@@ -713,7 +796,7 @@ function Import-RegistrySettings {
     if ([string]::IsNullOrEmpty($RegistrySettings) -or -not ($RegistrySettings -match '^https?://')) {
 
         if ($bypass) {
-            return
+            Return
         }
         Clear-Host
         Write-Host "URL to your registry settings file (JSON format) or leave blank to skip"
