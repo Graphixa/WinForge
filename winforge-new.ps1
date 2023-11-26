@@ -659,8 +659,7 @@ function Import-DefaultAppSettings {
             Clear-Host
             Write-Host "Setting default app associations..." -ForegroundColor Yellow
             
-            #echo Y | winget list | Out-Null  # uses old Alias 'echo' removed for future compatability
-            Start-Process -FilePath "dism.exe" -ArgumentList "/Online /Import-DefaultAppAssociations:$TempDownloadPath" -Wait -PassThru | Out-Null
+            Powershell.exe -executionpolicy remotesigned -Command dism /online /Import-DefaultAppAssociations:"$TempDownloadPath\defaultassociations.xml" -Wait -PassThru | Out-Null
         }
 
         catch {
