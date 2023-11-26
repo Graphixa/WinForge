@@ -10,8 +10,8 @@ param (
     [string]$wallpaperStyle,
     [string]$settings,
     [string]$apps,
-    [string]$activate,
-    [string]$export
+    [string]$appDefaults,
+    [string]$activate
 )
 
 <#
@@ -20,10 +20,10 @@ You can call your winforge.ps1 script with the parameters as follows:
 . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob-PC" -apps "www.list.com/myapplist.json"
 
 .EXAMPLE
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "Yes" -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "TestPC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "No" -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Winforge-1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate no" 
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "Yes" -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/test.ps1))) -checkpoint "Yes" -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "Yes" -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "TestPC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -appDefaults "https://raw.githubusercontent.com/Graphixa/WinForge/main/defaultapps.xml" -activate yes"
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "No" -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Winforge-1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -appDefaults "https://raw.githubusercontent.com/Graphixa/WinForge/main/defaultapps.xml" -activate no" 
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge-new.ps1))) -checkpoint "Yes" -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -appDefaults "https://raw.githubusercontent.com/Graphixa/WinForge/main/defaultapps.xml" -activate yes"
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge-new.ps1))) -checkpoint "Yes" -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -bypass
 
 .PARAMETER -bypass
     The -bypass switch parameter allows you to run the script without any user prompts or checks. 
@@ -60,6 +60,13 @@ You can call your winforge.ps1 script with the parameters as follows:
 .PARAMETER -apps
     The apps parameter allows you to specify a URL to your Winget import file (JSON format).
     Check GitHub for the layout of the JSON file. Alternatively, use the -bypass switch to avoid prompting for an input.
+
+.PARAMETER -appDefaults
+    The appDefaults parameter allows you to specify a URL to an XML file containing default app associations. 
+    Use the predefined associations file from WinForge or provide a custom DISM export file in XML format. 
+    
+    For more information on the required XML schema, refer to:
+    https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/export-or-import-default-application-associations
 
 .PARAMETER -checkpoint
     The checkpoint parameter allows you to create a system restore point.
@@ -653,7 +660,6 @@ function Import-DefaultAppSettings {
             Write-Host "Setting default app associations..." -ForegroundColor Yellow
             
             #echo Y | winget list | Out-Null  # uses old Alias 'echo' removed for future compatability
-            Write-Output Y | winget list | Out-Null
             Start-Process -FilePath "dism.exe" -ArgumentList "/Online /Import-DefaultAppAssociations:$TempDownloadPath" -Wait -PassThru | Out-Null
         }
 
@@ -912,10 +918,11 @@ function DeployAll {
     Set-ComputerName
     Set-Theme
     Set-WallPaper
+    Install-MAS
     Import-Settings
     Install-Apps
     Import-DefaultAppSettings
-    Install-MAS
+    
 }
 
 DeployAll
