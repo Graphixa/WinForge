@@ -54,7 +54,7 @@ foreach ($param in $paramDescriptions) {
             }
             else {
                 # Output the value
-                Write-Host "$($param.Name): ${$global:$($param.Name)}"
+                Write-Host "$($param.Name): $($global:$($param.Name))"
             }
         } while ($param.Validation -and $userInput -notmatch $param.Validation -and $userInput -ne "")
     }
