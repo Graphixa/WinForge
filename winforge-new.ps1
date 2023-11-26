@@ -249,7 +249,7 @@ function Set-Theme {
         $theme = 0  # Dark Mode
     }
 
-    if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "light") -or ($theme -ne "dark")) {
+    if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne 1) -or ($theme -ne 0)) {
 
         if ($bypass) {
             return
