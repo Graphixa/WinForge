@@ -33,8 +33,9 @@ function Show-ErrorMessage {
     Write-Host "Error: $ErrorMessage" -ForegroundColor Red
 }
 
-# Iterate through the parameters
+# ...
 
+# Iterate through the parameters
 foreach ($param in $paramDescriptions) {
     # Check if the parameter is null
     if (-not (Get-Variable -Name $param.Name -ValueOnly)) {
@@ -43,28 +44,30 @@ foreach ($param in $paramDescriptions) {
             Clear-Host
             $userInput = Read-Host $param.Description
             Set-Variable -Name $param.Name -Value $userInput -Scope Global
+
             if ($param.Validation -and $userInput -notmatch $param.Validation -and $userInput -ne "") {
                 Show-ErrorMessage -ErrorMessage $param.ErrorMessage
                 Pause
             }
+
             if ($userInput -eq "") {
-                Write-Host $param.Name "skipped..." -ForegroundColor Yellow
-                Start-Sleep 2  
+                Write-Host "$($param.Name) skipped..." -ForegroundColor Yellow
+                Start-Sleep 2
             }
             else {
                 # Output the value
-                Write-Host "$($param.Name): $(${param.Name})"
+                Write-Host "$($param.Name): $($($param.Name))"
             }
         } while ($param.Validation -and $userInput -notmatch $param.Validation -and $userInput -ne "")
     }
 }
 
 # Output the values (optional)
-Write-Host "Theme: $theme"
-Write-Host "Computer Name: $computerName"
-Write-Host "Wallpaper: $wallpaper"
-Write-Host "Wallpaper Style: $wallpaperStyle"
-Write-Host "Settings: $settings"
-Write-Host "Apps: $apps"
-Write-Host "Activate: $activate"
-pause
+Write-Host "Theme: $global:theme"
+Write-Host "Computer Name: $global:computerName"
+Write-Host "Wallpaper: $global:wallpaper"
+Write-Host "Wallpaper Style: $global:wallpaperStyle"
+Write-Host "Settings: $global:settings"
+Write-Host "Apps: $global:apps"
+Write-Host "Activate: $global:activate"
+Pause
