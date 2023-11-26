@@ -248,7 +248,7 @@ function Set-Theme {
         $global:theme = 0  # Dark Mode
     }
 
-    if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "1") -or ($theme -ne "0")) {
+    if (([string]::IsNullOrEmpty($global:theme)) -or ($global:theme -ne "1") -or ($global:theme -ne "0")) {
 
         if ($bypass) {
             return
@@ -264,10 +264,10 @@ function Set-Theme {
 
             switch ($choice) {
                 "1" {
-                    $theme = "1"  # Light Mode
+                    $global:theme = "1"  # Light Mode
                 }
                 "2" {
-                    $theme = "0"  # Dark Mode
+                    $global:theme = "0"  # Dark Mode
                 }
                 Default {
                     Clear-Host
@@ -278,7 +278,7 @@ function Set-Theme {
         } while ($choice -ne "1" -and $choice -ne "2")
     } 
 
-    if ([string]::IsNullOrEmpty($theme)){
+    if ([string]::IsNullOrEmpty($global:theme)){
         # The user entered nothing, so skip setting the computer name.
         Clear-Host
         Write-Host "Theme setting skipped..." -ForegroundColor Yellow
@@ -286,17 +286,17 @@ function Set-Theme {
         Return
     }
 
-    if (-not [string]::IsNullOrEmpty($theme)) {
+    if (-not [string]::IsNullOrEmpty($global:theme)) {
     
         try {
             Clear-Host
             Write-Host "Setting theme..." -ForegroundColor Yellow
             Start-Sleep 2
-            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword' | Out-Null
+            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $global:theme -PropertyType 'Dword' | Out-Null
             Stop-Process -Name explorer -Force
             Start-Process explorer
 
-            $themeChoice = if ($theme -eq 1) {
+            $themeChoice = if ($global:theme -eq 1) {
                 "Light Mode"
             }
             else {
@@ -317,7 +317,6 @@ function Set-Theme {
     }
  
 }
-
 
 function Set-WallPaper {
 
