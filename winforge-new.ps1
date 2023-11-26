@@ -115,11 +115,11 @@ function Show-ASCIIArt {
 
 function Set-Checkpoint {
 
-    if ($checkpoint -eq "yes") {
+    if ($checkpoint.ToLower() -eq "yes") {
         $checkpoint = "Y"  # Light Mode
     }
     
-    if ($checkpoint -eq "no") {
+    if ($checkpoint.ToLower() -eq "no") {
         $checkpoint = "N"  # Dark Mode
     }
 
