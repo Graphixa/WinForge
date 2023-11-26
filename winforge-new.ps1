@@ -242,12 +242,12 @@ function Set-Theme {
 #>
 
     if ($theme -eq "Light") {
-        $theme = 1  # Light Mode
+        $global:theme = 1  # Light Mode
     }
     if ($theme -eq "Dark") {
-        $theme = 0  # Dark Mode
+        $global:theme = 0  # Dark Mode
     }
-    
+
     if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "1") -or ($theme -ne "0")) {
 
         if ($bypass) {
@@ -862,6 +862,7 @@ Write-Host @"
 Write-Host ""
 
 Write-Host "$theme"
+Write-Host "$global:theme"
 Write-Host "$settings"
 Write-Host "$apps"
 Write-Host "$checkpoint"
