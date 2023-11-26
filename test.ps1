@@ -63,9 +63,12 @@ foreach ($param in $paramDescriptions) {
 }
 
 # Output the values (optional)
-Write-Host "Theme: $global:theme"
-Write-Host "Computer Name: $global:computerName"
-Write-Host "Wallpaper: $global:wallpaper"
+Write-Host "Theme: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:theme
+Write-Host "Computer Name: " -ForegroundColor Yellow -NoNewline
+Write-Host "$global:computerName"
+Write-Host "Wallpaper: " -ForegroundColor Yellow
+Write-Host $global:wallpaper 
 Write-Host "Wallpaper Style: $global:wallpaperStyle"
 Write-Host "Settings: $global:settings"
 Write-Host "Apps: $global:apps"
