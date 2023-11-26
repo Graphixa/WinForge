@@ -67,3 +67,4 @@ Write-Host "Wallpaper Style: $wallpaperStyle"
 Write-Host "Settings: $settings"
 Write-Host "Apps: $apps"
 Write-Host "Activate: $activate"
+pause
