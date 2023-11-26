@@ -123,7 +123,7 @@ function Set-Checkpoint {
         $checkpoint = "N"
     }
 
-    if ([string]::IsNullOrEmpty($checkpoint) -or ($checkpoint -ne "N" -and $checkpoint -ne "Y")) {
+    if ([string]::IsNullOrEmpty($checkpoint)) {
 
         if ($bypass) {
             return
