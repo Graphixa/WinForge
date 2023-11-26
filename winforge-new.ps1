@@ -150,7 +150,7 @@ function Set-Checkpoint {
     if ([string]::IsNullOrEmpty($checkpoint) -or ($checkpoint -eq "N")) {
         # The user entered nothing, so skip setting the computer name.
         Clear-Host
-        Write-Host "Set computer name skipped..." -ForegroundColor Yellow
+        Write-Host "Creation of system restore point skipped..." -ForegroundColor Yellow
         Start-Sleep 2
         Return
     }
@@ -293,7 +293,7 @@ function Set-Theme {
             Write-Host "Setting theme..." -ForegroundColor Yellow
             Start-Sleep 2
             Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword' | Out-Null
-            Stop-Process -ProcessName explorer -Force
+            Stop-Process explorer -Force
             Start-Process explorer
 
             $themeChoice = if ($theme -eq 1) {
