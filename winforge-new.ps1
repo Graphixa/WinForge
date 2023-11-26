@@ -116,11 +116,11 @@ function Show-ASCIIArt {
 function Set-Checkpoint {
 
     if ($checkpoint.ToLower() -eq "yes") {
-        $checkpoint = "Y"  # Light Mode
+        $checkpoint = "Y"
     }
     
     if ($checkpoint.ToLower() -eq "no") {
-        $checkpoint = "N"  # Dark Mode
+        $checkpoint = "N"
     }
 
     if ([string]::IsNullOrEmpty($checkpoint) -or ($checkpoint -ne "N") -or ($checkpoint -ne "Y")) {
