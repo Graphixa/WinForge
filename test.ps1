@@ -49,17 +49,24 @@ foreach ($param in $paramDescriptions) {
                 Write-Host "$paramName skipped..." -ForegroundColor Yellow
                 Start-Sleep 2
             }
-            else {
-                # Output the value
-                Write-Host ""$paramName": $($global:$paramName)"
-            }
+
         } while ($paramValidation -and $userInput -notmatch $paramValidation -and $userInput -ne "")
     }
 }
 
 # Output the values (optional)
-foreach ($param in $paramDescriptions) {
-    $paramName = $param.Name
-    Write-Host "$paramName: $($global:$($paramName))" -ForegroundColor White
-}
+Write-Host "Theme: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:theme -ForegroundColor White
+Write-Host "Computer Name: " -ForegroundColor Yellow -NoNewline
+Write-Host "$global:computerName" -ForegroundColor White
+Write-Host "Wallpaper: " -ForegroundColor Yellow
+Write-Host $global:wallpaper -ForegroundColor White 
+Write-Host "Wallpaper Style: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:wallpaperStyle -ForegroundColor White
+Write-Host "Settings: "-ForegroundColor Yellow -NoNewline
+Write-Host $global:settings -ForegroundColor White
+Write-Host "Apps: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:apps -ForegroundColor White
+Write-Host "Activate: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:activate -ForegroundColor White
 Pause
