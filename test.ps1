@@ -16,7 +16,7 @@ param (
 
 # Define an array of hashtables with parameter, description, validation, and error message (if any)
 $paramDescriptions = @(
-    @{Name='theme'; Description='Please set your theme:'},
+    @{Name='theme'; Description='Please set your theme:'; Validation='^(Light|Dark|1|0)$'; ErrorMessage='Invalid choice: "Light, Dark"'},
     @{Name='computerName'; Description='Set a computer name [Leave blank to skip]:'},
     @{Name='wallpaper'; Description='Please enter a valid Wallpaper URL:'; Validation='^https?://[\S]+$'; ErrorMessage='Invalid Wallpaper URL format'},
     @{Name='wallpaperStyle'; Description='Please specify the wallpaper style:'; Validation='^(Fill|Fit|Stretch|Tile|Center|Span)$'; ErrorMessage='Invalid option, choose between Fill, Fit, Stretch, Tile, Centre or Span'},
@@ -32,8 +32,6 @@ function Show-ErrorMessage {
     )
     Write-Host "Error: $ErrorMessage" -ForegroundColor Red
 }
-
-# ...
 
 # Iterate through the parameters
 foreach ($param in $paramDescriptions) {
@@ -64,13 +62,17 @@ foreach ($param in $paramDescriptions) {
 
 # Output the values (optional)
 Write-Host "Theme: " -ForegroundColor Yellow -NoNewline
-Write-Host $global:theme
+Write-Host $global:theme -ForegroundColor White
 Write-Host "Computer Name: " -ForegroundColor Yellow -NoNewline
-Write-Host "$global:computerName"
+Write-Host "$global:computerName" -ForegroundColor White
 Write-Host "Wallpaper: " -ForegroundColor Yellow
-Write-Host $global:wallpaper 
-Write-Host "Wallpaper Style: $global:wallpaperStyle"
-Write-Host "Settings: $global:settings"
-Write-Host "Apps: $global:apps"
-Write-Host "Activate: $global:activate"
+Write-Host $global:wallpaper -ForegroundColor White 
+Write-Host "Wallpaper Style: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:wallpaperStyle -ForegroundColor White
+Write-Host "Settings: "-ForegroundColor Yellow -NoNewline
+Write-Host $global:settings -ForegroundColor White
+Write-Host "Apps: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:apps -ForegroundColor White
+Write-Host "Activate: " -ForegroundColor Yellow -NoNewline
+Write-Host $global:activate -ForegroundColor White
 Pause
