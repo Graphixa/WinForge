@@ -292,9 +292,9 @@ function Set-Theme {
             Clear-Host
             Write-Host "Setting theme..." -ForegroundColor Yellow
             Start-Sleep 2
-            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
-            Stop-Process -Name explorer -Force
-            Start-Process -Name explorer
+            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword' | Out-Null
+            Stop-Process -ProcessName explorer -Force
+            Start-Process explorer
 
             $themeChoice = if ($theme -eq 1) {
                 "Light Mode"
@@ -860,4 +860,13 @@ Write-Host @"
 
 "@
 Write-Host ""
+
+Write-Host "$theme"
+Write-Host "$settings"
+Write-Host "$apps"
+Write-Host "$checkpoint"
+Write-Host "$wallpaper"
+Write-Host "$wallpaperStyle"
+Write-Host "$computerName"
+Write-Host "$activate"
 Pause
