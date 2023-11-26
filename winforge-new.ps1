@@ -2,7 +2,9 @@
 
 
 param (
+    [switch]$bypass,
     [string]$theme,
+    [string]$checkpoint,
     [string]$computerName,
     [string]$wallpaper,
     [string]$wallpaperStyle,
@@ -12,23 +14,60 @@ param (
     [string]$export
 )
 
+<#
+.DESCRIPTION
+You can call your winforge.ps1 script with the parameters as follows:
+. .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob-PC" -apps "www.list.com/myapplist.json"
 
-# You can call your winforge.ps1 script with the parameters as follows:
-# . .\winforge.ps1 -theme 0 -wallpaper '#555555' -wallpaperStyle 'fill' -settings "www.list.com/settings.json" -computerName "Bob-PC" -apps "www.list.com/myapplist.json"
+.EXAMPLE
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "Yes" -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "TestPC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "No" -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Winforge-1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate no" 
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -checkpoint "Yes" -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
 
-#REMOTE USAGE
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme light -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "TestPC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg" -wallpaperStyle 'fill' -computerName "Winforge-1" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate no" 
-# & ([scriptblock]::Create((irm https://raw.githubusercontent.com/Graphixa/WinForge/main/winforge.ps1))) -theme dark -wallpaper "https://images.pexels.com/photos/2478248/pexels-photo-2478248.jpeg" -wallpaperStyle 'fill' -computerName "WinForgePC" -settings "https://raw.githubusercontent.com/Graphixa/WinForge/main/ooshutup10.cfg" -apps "https://raw.githubusercontent.com/Graphixa/WinForge/main/applist.json -activate yes"
+.PARAMETER -bypass
+    The -bypass switch parameter allows you to run the script without any user prompts or checks. 
 
-# Parameter Options
-# ------------------
-# theme: (Options: light, dark, 1 or 2)  1 = light theme, 2 = dark theme
-# wallpaper: (Example: https://imageurl.com/mywallpaper.jpg or leave blank to skip
-# computerName: "Example: Bob PC" always use "" especially when using a space in your pc name, alternatively leave blank to skip
-# settings: Add a url to your O&O shutup configuration file, feel free to use the default one or alternatively leave blank to skip
-# apps: Add a url to your Winget import file (JSON format), check GitHub for layout of JSON file, alternatively leave blank to skip
-# activate: (Options: Yes, No, Y or N) - Enter Yes or No to select whether you want to activate windows using massgrave's Mass Activation Scripts (MAS)
+    When included, it allows for a streamlined execution, bypassing all parameter prompts and enabling the script to run without requiring additional user input. 
+    This functionality is particularly useful for advanced users aiming to automate specific aspects of the script while excluding others. 
+    
+    Example: Users might choose to utilize -checkpoint, -apps, and -theme options while avoiding other modifications and this can be done by including -bypass in the scriptblock.
+    Exercise caution and use this option only if you are confident in the script's content, having thoroughly reviewed its functionality.
+
+.PARAMETER -theme
+    The theme parameter allows you to specify the desired color theme.
+    Options: light, dark, 1, or 2. (1 = light theme, 2 = dark theme)
+
+.PARAMETER -wallpaper
+    The wallpaper parameter allows you to set the background image from a remote URL or imagehost.
+    Example: https://imageurl.com/mywallpaper.jpg or leave blank to skip.
+
+.PARAMETER -wallpaperStyle
+    Provide the wallpaper style for your desktop background (Required if you include the -wallpaper parameter)
+    Options: Fill, Fit, Stretch, Tile, Center, or Span.
+
+.PARAMETER -computerName
+    The computerName parameter sets the computer name.
+    Example: "Paul PC".
+
+    Always use quotes, especially when using spaces in your PC name. Alternatively, use the -bypass switch to avoid prompting for an input.
+    Please note that Windows does not support certain characters in computer names. To avoid errors, refrain from using the following characters: ' < > : " / \ | ? *'
+
+.PARAMETER -settings
+    The settings parameter allows you to provide a URL to your O&O ShutUp configuration file.
+    Feel free to use the default one or use the -bypass switch to avoid prompting for an input.
+
+.PARAMETER -apps
+    The apps parameter allows you to specify a URL to your Winget import file (JSON format).
+    Check GitHub for the layout of the JSON file. Alternatively, use the -bypass switch to avoid prompting for an input.
+
+.PARAMETER -checkpoint
+    The checkpoint parameter allows you to create a system restore point.
+    Options: Yes, No, Y, or N. Enter Yes to create a system restore point (Highly recommended) or No to skip.
+
+.PARAMETER -activate
+    The activate parameter allows you to activate Windows using massgrave's Mass Activation Scripts (MAS).
+    Options: Yes, No, Y, or N. Enter Yes or No to select whether you want to activate Windows using MAS.
+#>
 
 function Set-RegistryProperty {
     # Example usage: Set-RegistryProperty -Path 'HKCU:\Software\Example' -Name 'SampleValue' -Value 'NewValue' -PropertyType 'String'
@@ -74,24 +113,49 @@ function Show-ASCIIArt {
 }
 
 function Set-Checkpoint {
-    do {
-        Clear-Host
-        Write-Host "Do you want to create a system restore point?" -ForegroundColor Yellow
-        Write-Host "[Not required, but advisable]" -ForegroundColor Gray
-        Write-Host ""
-        Write-Host "[Y] Yes"
-        Write-Host "[N] No"
-        Write-Host ""
-        $choice = Read-Host "Enter your choice (Y/N)"
-        $choice = $choice.ToUpper()  # Convert to uppercase for case-insensitive comparison
-        if ($choice -ne "Y" -and $choice -ne "N") {
-            Clear-Host
-            Write-Host "Invalid choice. Please select a valid option (Y/N)." -ForegroundColor Red
-            Start-Sleep 2
-        }
-    } while ($choice -ne "Y" -and $choice -ne "N")
 
-    if ($choice -eq "Y") {
+    if ($checkpoint -eq "yes") {
+        $checkpoint = "Y"  # Light Mode
+    }
+    
+    if ($checkpoint -eq "no") {
+        $checkpoint = "N"  # Dark Mode
+    }
+
+    if ([string]::IsNullOrEmpty($checkpoint) -or ($checkpoint -ne "N") -or ($checkpoint -ne "Y")) {
+
+        if ($bypass) {
+            return
+        }
+
+        do {
+            Clear-Host
+            Write-Host "Do you want to create a system restore point?" -ForegroundColor Yellow
+            Write-Host "[Not required, but advisable]" -ForegroundColor Gray
+            Write-Host ""
+            Write-Host "[Y] Yes"
+            Write-Host "[N] No"
+            Write-Host ""
+            $checkpoint = Read-Host "Enter your choice (Y/N)"
+            $checkpoint = $checkpoint.ToUpper()  # Convert to uppercase for case-insensitive comparison
+            if ($checkpoint -ne "Y" -and $checkpoint -ne "N") {
+                Clear-Host
+                Write-Host "Invalid choice. Please select a valid option (Y/N)." -ForegroundColor Red
+                Start-Sleep 2
+            }
+        } while ($checkpoint -ne "Y" -and $checkpoint -ne "N")
+
+    }
+    
+    if ([string]::IsNullOrEmpty($checkpoint) -or ($checkpoint -eq "N")) {
+        # The user entered nothing, so skip setting the computer name.
+        Clear-Host
+        Write-Host "Set computer name skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return
+    }
+
+    if ($checkpoint -eq "Y") {
         Clear-Host
         Write-Host "Creating a system restore point..."
   
@@ -112,132 +176,152 @@ function Set-Checkpoint {
         }
         
     }
-    elseif ($choice -eq "N") {
-        Clear-Host
-        Write-Host "System restore point creation skipped." -ForegroundColor Yellow
-        Start-Sleep 2
-        Clear-Host
-    }
-}
-
-function Get-Parameters {
-
-# Checks if Parameters are listed
-
-
 }
 
 function Set-ComputerName {
     
     if ([string]::IsNullOrEmpty($computerName)) {
+        
+        if ($bypass) {
+            Return
+        }
+
         Clear-Host
         Write-Host "Set a computer name [Leave blank to skip]"
         $computerName = Read-Host "Computer Name:"
 
     }
-    if ([string]::IsNullOrEmpty($computerName)){
+
+    if ([string]::IsNullOrEmpty($computerName)) {
         # The user entered nothing, so skip setting the computer name.
         Clear-Host
         Write-Host "Set computer name skipped..." -ForegroundColor Yellow
         Start-Sleep 2
         Return
     }
-
     
-    try {
+    if (-not [string]::IsNullOrEmpty($computerName)) {
+        try {
+            Clear-Host
+            Write-Host "Setting computer name now..."
+            Rename-Computer -NewName $computerName -Force
+            Start-Sleep 2
+        }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
+
         Clear-Host
-        Write-Host "Setting computer name now..."
-        Rename-Computer -NewName $computerName -Force
+        Write-Host "Computer name set to: " -NoNewline -ForegroundColor Yellow
+        Write-Host $computerName -NoNewline -ForegroundColor White
         Start-Sleep 2
     }
-    catch {
-        Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
-        Write-Host ""
-        Pause
-    }
-    Clear-Host
-    Write-Host "Computer name set to: " -NoNewline -ForegroundColor Yellow
-    Write-Host $computerName -NoNewline -ForegroundColor White
-    Start-Sleep 2
 }
 
-
 function Set-Theme {
+
     <#
-.SYNOPSIS
-Sets the theme (Light Mode or Dark Mode) for the current user in Windows.
+    .SYNOPSIS
+    Sets the theme (Light Mode or Dark Mode) for the current user in Windows.
 
-.DESCRIPTION
-This function allows you to set the theme for the current user in Windows. You can choose between Light Mode and Dark Mode.
+    .DESCRIPTION
+    This function allows you to set the theme for the current user in Windows. You can choose between Light Mode and Dark Mode.
 
-.PARAMETER theme
-Specify the theme to set. You can use "Light" for Light Mode or "Dark" for Dark Mode. If not provided, the function will prompt you to choose a theme interactively.
+    .PARAMETER theme
+    Specify the theme to set. You can use "Light" for Light Mode or "Dark" for Dark Mode. If not provided, the function will prompt you to choose a theme interactively.
 
-.EXAMPLE
-# Set the theme to Light Mode
-Set-Theme -theme "Light" or Set-Theme Light
+    .EXAMPLE
+    # Set the theme to Light Mode
+    Set-Theme -theme "Light" or Set-Theme Light
 
-# Set the theme to Dark Mode
-Set-Theme -theme "Dark" or Set-Theme Dark
+    # Set the theme to Dark Mode
+    Set-Theme -theme "Dark" or Set-Theme Dark
 #>
-
 
     if ($theme -eq "Light") {
         $theme = 1  # Light Mode
     }
-    elseif ($theme -eq "Dark") {
+
+    if ($theme -eq "Dark") {
         $theme = 0  # Dark Mode
     }
-    else {
-        if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "Dark") -or ($theme -ne "Light")) {
-            do {
-                Clear-Host
-                Write-Host "Choose a theme option:" -ForegroundColor Yellow
-                Write-Host ""
-                Write-Host "[1] Light Mode"
-                Write-Host "[2] Dark Mode"
-                Write-Host ""
-                $choice = Read-Host "Enter the number corresponding to your choice (1-2)"
 
-                switch ($choice) {
-                    "1" {
-                        $theme = 1  # Light Mode
-                    }
-                    "2" {
-                        $theme = 0  # Dark Mode
-                    }
-                    Default {
-                        Clear-Host
-                        Write-Host "Invalid choice. Please select a valid number (1-2)." -ForegroundColor Red
-                        Start-Sleep 3
-                    }
+    if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne 0) -or ($theme -ne 1)) {
+
+        if ($bypass) {
+            return
+        }
+        do {
+            Clear-Host
+            Write-Host "Choose a theme option:" -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "[1] Light Mode"
+            Write-Host "[2] Dark Mode"
+            Write-Host ""
+            $choice = Read-Host "Enter the number corresponding to your choice (1-2)"
+
+            switch ($choice) {
+                "1" {
+                    $theme = 1  # Light Mode
                 }
-            } while ($choice -ne "1" -and $choice -ne "2")
+                "2" {
+                    $theme = 0  # Dark Mode
+                }
+                Default {
+                    Clear-Host
+                    Write-Host "Invalid choice. Please select a valid number (1-2)." -ForegroundColor Red
+                    Start-Sleep 3
+                }
+            }
+        } while ($choice -ne "1" -and $choice -ne "2")
+    } 
+
+    if ([string]::IsNullOrEmpty($theme)){
+        # The user entered nothing, so skip setting the computer name.
+        Clear-Host
+        Write-Host "Theme setting skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return
+    }
+
+    if (-not [string]::IsNullOrEmpty($theme)) {
+    
+        try {
+            Clear-Host
+            Write-Host "Setting theme..." -ForegroundColor Yellow
+            Start-Sleep 2
+            Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
+            Stop-Process -Name explorer -Force
+            Start-Process -Name explorer
+
+            $themeChoice = if ($theme -eq 1) {
+                "Light Mode"
+            }
+            else {
+                "Dark Mode"
+            }
+
+            Clear-Host
+            Write-Host "Theme Setting: " -NoNewline -ForegroundColor Yellow
+            Write-Host $themeChoice -NoNewline -ForegroundColor White
+            Start-Sleep 2
+        
+        }
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
         }
     }
-    
-    Clear-Host
-    Write-Host "Setting theme..." -ForegroundColor Yellow
-    Start-Sleep 2
-    Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword'
-    Stop-Process -Name explorer -Force
-    Start-Process -Name explorer
-
-    $themeChoice = if ($theme -eq 1) {
-        "Light Mode"
-    }
-    else {
-        "Dark Mode"
-    }
-    Clear-Host
-    Write-Host "Theme Setting: " -NoNewline -ForegroundColor Yellow
-    Write-Host $themeChoice -NoNewline -ForegroundColor White
-    Start-Sleep 2
+ 
 }
 
-Function Set-WallPaper {
- 
-<#
+
+function Set-WallPaper {
+
+    <#
 
     .SYNOPSIS
     Applies a specified wallpaper to the current user's desktop
@@ -251,54 +335,78 @@ Function Set-WallPaper {
   
 #>
 
-    if ([string]::IsNullOrEmpty($wallpaper)) {
 
-        Clear-Host
-        Write-Host "Paste a URL for your wallpaper or press [Enter] to skip:" -ForegroundColor Yellow
-        Write-Host "Example: https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" -ForegroundColor Gray
-        Write-Host ""
-        $wallpaper = Read-Host "Wallpaper URL" 
+    if ([string]::IsNullOrEmpty($wallpaper) -or -not ($wallpaper -match '^https?://')) {
+    
+        if ($bypass) {
+            return
+        }
+
+        do {
+            Clear-Host
+            Write-Host "Paste a URL for your wallpaper or press [Enter] to skip:" -ForegroundColor Yellow
+            Write-Host "Example: https://images.pexels.com/photos/2246476/pexels-photo-2246476.jpeg" -ForegroundColor Gray
+            Write-Host ""
+            $wallpaper = Read-Host "Wallpaper URL" 
+    
+            if (-not [string]::IsNullOrEmpty($wallpaper) -and $wallpaper -match '^https?://') {
+                break  # Exit the loop if a valid URL is provided
+            }
+            else {
+                Write-Host "Invalid URL. Please enter a valid URL." -ForegroundColor Red
+                Start-Sleep -Seconds 2  # Sleep for 2 seconds before looping again
+            }
+        } while ($true)
     }
 
     # 2nd Check of $wallpaper variable - if still empty, skips the function entirely.
-    if (-not [string]::IsNullOrEmpty($wallpaper)) {
+    if ([string]::IsNullOrEmpty($wallpaper)) {
+    
+        # The user entered nothing, so skip setting the wallpaper.
+        Clear-Host
+        Write-Host "Wallpaper import skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return      
+    }
 
-        if ([string]::IsNullOrEmpty($wallpaperStyle)) {
+    if ([string]::IsNullOrEmpty($wallpaperStyle) -or $wallpaperStyle.ToLower() -notin @('fit', 'fill', 'stretch', 'tile', 'centre', 'span')) {
 
-            do {
-                Clear-Host
-                Write-Host "Choose your wallpaper style (1-6):"
-                Write-Host "[1] - Fit"
-                Write-Host "[2] - Fill"
-                Write-Host "[3] - Stretch"
-                Write-Host "[4] - Tile"
-                Write-Host "[5] - Centre"
-                Write-Host "[6] - Span"
-                Write-Host ""
-                $StyleChoice = Read-Host "Enter the number corresponding to your choice"
-                
-                switch ($StyleChoice) {
-                    "1" { $wallpaperStyle = "Fit" }
-                    "2" { $wallpaperStyle = "Fill" }
-                    "3" { $wallpaperStyle = "Stretch" }
-                    "4" { $wallpaperStyle = "Tile" }
-                    "5" { $wallpaperStyle = "Centre" }
-                    "6" { $wallpaperStyle = "Span" }
-                    Default {
-                        Clear-Host
-                        Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
-                        Start-Sleep 3
-                        $StyleChoice = $null
-                    }
-                }
-            } while (-not $StyleChoice)
-                
+        do {
             Clear-Host
-            Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
-            Write-Host $wallpaperStyle -ForegroundColor White
-            Start-Sleep 2
-        }
+            Write-Host "Choose your wallpaper style (1-6):"
+            Write-Host "[1] - Fit"
+            Write-Host "[2] - Fill"
+            Write-Host "[3] - Stretch"
+            Write-Host "[4] - Tile"
+            Write-Host "[5] - Centre"
+            Write-Host "[6] - Span"
+            Write-Host ""
+            $StyleChoice = Read-Host "Enter the number corresponding to your choice"
+    
+            switch ($StyleChoice) {
+                "1" { $wallpaperStyle = "fit" }
+                "2" { $wallpaperStyle = "fill" }
+                "3" { $wallpaperStyle = "stretch" }
+                "4" { $wallpaperStyle = "tile" }
+                "5" { $wallpaperStyle = "centre" }
+                "6" { $wallpaperStyle = "span" }
+                Default {
+                    Clear-Host
+                    Write-Host "Invalid choice. Please select a valid number (1-6)." -ForegroundColor Red
+                    Start-Sleep 3
+                    $StyleChoice = $null
+                }
+            }
+        } while (-not $StyleChoice)
+    
+        Clear-Host
+        Write-Host "Wallpaper Style: " -NoNewline -ForegroundColor Yellow
+        Write-Host $wallpaperStyle.ToUpper() -ForegroundColor White
+        Start-Sleep 2
+    }
 
+    if (-not [string]::IsNullOrEmpty($wallpaper) -and $wallpaper -match '^https?://') {
+    
         # Download Wallpaper from URL
         try {
             
@@ -328,29 +436,30 @@ Function Set-WallPaper {
 
         $Style = Switch ($WallpaperStyle) {
   
-            "Fill" { "10" }
-            "Fit" { "6" }
-            "Stretch" { "2" }
-            "Tile" { "0" }
-            "Center" { "0" }
-            "Span" { "22" }
+            "fill" { "10" }
+            "fit" { "6" }
+            "stretch" { "2" }
+            "tile" { "0" }
+            "center" { "0" }
+            "span" { "22" }
   
         }
  
-        If ($Style -eq "Tile") {
+        if ($Style -eq "Tile") {
  
             New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
             New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 1 -Force | Out-Null
  
         }
-        Else {
+        else {
  
             New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -PropertyType String -Value $style -Force | Out-Null
             New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -PropertyType String -Value 0 -Force | Out-Null
  
         }
  
-        Add-Type -TypeDefinition @" 
+        try {
+            Add-Type -TypeDefinition @" 
 using System; 
 using System.Runtime.InteropServices;
   
@@ -364,36 +473,46 @@ public class Params
 }
 "@ 
   
-        $SPI_SETDESKWALLPAPER = 0x0014
-        $UpdateIniFile = 0x01
-        $SendChangeEvent = 0x02
+            $SPI_SETDESKWALLPAPER = 0x0014
+            $UpdateIniFile = 0x01
+            $SendChangeEvent = 0x02
   
-        $fWinIni = $UpdateIniFile -bor $SendChangeEvent
+            $fWinIni = $UpdateIniFile -bor $SendChangeEvent
   
-        $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
+            $ret = [Params]::SystemParametersInfo($SPI_SETDESKWALLPAPER, 0, $wallpaperDownloadPath, $fWinIni)
 
-        Clear-Host
-        Write-Host "Wallpaper import complete..." -ForegroundColor Yellow
-        Start-Sleep 2
+            Clear-Host
+            Write-Host "Wallpaper import complete..." -ForegroundColor Yellow
+            Start-Sleep 2
+        }
+
+        catch {
+            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
+            Write-Host ""
+            Pause
+        }
+        
     }
-    else {
-        # The user entered nothing, so skip setting the wallpaper.
-        Clear-Host
-        Write-Host "Wallpaper import skipped..." -ForegroundColor Yellow
-        Start-Sleep 2
-    }
-}        
+
+       
+}
 
 function Install-Apps {
 
-    if ([string]::IsNullOrEmpty($apps)) {
+
+
+    if ([string]::IsNullOrEmpty($apps) -or -not ($apps -match '^https?://')) {
         $choiceMade = $false
+
+        if ($bypass) {
+            return
+        }
 
         while (-not $choiceMade) {
             Clear-Host
             Write-Host "Do you want to install apps on the system?" -ForegroundColor Yellow
             Write-Host ""
-            Write-Host "[1] - Use default app list " -NoNewline
+            Write-Host "[1] - Use WinForge default app list " -NoNewline
             Write-Host "| https://winstall.app/packs/hEZLyyrSB" -ForegroundColor Gray
             Write-Host "[2] - Specify your own URL " -NoNewline
             Write-Host "| Must be a winget import file in JSON format" -ForegroundColor Gray
@@ -421,7 +540,6 @@ function Install-Apps {
                     }
                 }
                 3 {
-                    Write-Host "Skipping app installation."
                     $choiceMade = $true
                 }
                 default {
@@ -430,6 +548,14 @@ function Install-Apps {
                 }
             }
         }
+    }
+
+    if ([string]::IsNullOrEmpty($apps)){
+        # The user entered nothing, so skip installing apps.
+        Clear-Host
+        Write-Host "Apps installation skipped..." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return
     }
 
     # 2nd Check of $apps variable - if still empty, skips the function entirely.
@@ -454,66 +580,17 @@ function Install-Apps {
             Pause
         }
     }
-    else {
-        # The user entered nothing, so skip installing apps.
-        Clear-Host
-        Write-Host "Apps installation skipped..." -ForegroundColor Yellow
-        Start-Sleep 2
-    }
+
 }
-
-<# Old Version that didn't use Winget Import
-function Install-Apps {
-    param (
-        [string]$apps
-    )
-
-    if (-not $apps) {
-        $apps = Read-Host "Specify the URL to your JSON file containing the list of apps:"
-    }
-        
-    if ([string]::IsNullOrEmpty($apps)) {
-        try {
-
-            # Fetch the list of apps from GitHub
-            $jsonContent = Invoke-RestMethod -Uri $apps
-
-            # Create the $wingetapps array
-            $wingetapps = @()
-
-            # Add the apps from the JSON file to the array
-            $wingetapps += $jsonContent
-
-            # Output the $wingetapps array for verification
-            $wingetapps
-
-            Write-Host "Installing applications..."
-
-          # We need to interact with winget and accept the source agreements
-          # before we're able to actually use it. So, just a random search
-          # command will work.
-          # winget search Microsoft.WindowsTerminal --accept-source-agreements
-            echo Y | winget list | Out-Null
-
-            foreach ($wingetapp in $wingetapps) {
-                winget install -e --accept-source-agreements --accept-package-agreements --id $wingetapp
-            }
-        }
-        catch {
-            Write-Host "Error:" $_.Exception.Message -ForegroundColor Red
-            Write-Host ""
-            Pause
-        }
-    }
-}
-#>
 
 function Import-Settings {
-    # Example usage:
-    # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
 
-    if ([string]::IsNullOrEmpty($settings)) {
+    if ([string]::IsNullOrEmpty($settings) -or -not ($settings -match '^https?://')) {
         $choiceMade = $false
+        
+        if ($bypass) {
+            return
+        }
 
         while (-not $choiceMade) {
             Clear-Host
@@ -561,6 +638,14 @@ function Import-Settings {
     }
 
     # 2nd Check of $settings variable - if still empty, skips the function entirely.
+    if ([string]::IsNullOrEmpty($settings)) {
+        # The user entered nothing, so skip calling your script.
+        Clear-Host
+        Write-Host "Settings import skipped." -ForegroundColor Yellow
+        Start-Sleep 2
+        Return
+    }
+
     if (-not [string]::IsNullOrEmpty($settings)) {
         try {
             
@@ -620,23 +705,32 @@ function Import-Settings {
             Pause
         }
     }
-    else {
-        # The user entered nothing, so skip calling your script.
-        Clear-Host
-        Write-Host "Settings import skipped." -ForegroundColor Yellow
-        Start-Sleep 2
-    }
 }
 
 function Import-RegistrySettings {
-    # Example usage:
-    # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
 
-    if ([string]::IsNullOrEmpty($RegistrySettings)) {
-        Write-Host "Url to your registry settings file (JSON format) or leave blank to skip"
-        $RegistrySettings = Read-Host "URL:"
+    # CURRENTLY UNUSED
+
+    if ([string]::IsNullOrEmpty($RegistrySettings) -or -not ($RegistrySettings -match '^https?://')) {
+
+        if ($bypass) {
+            return
+        }
+        Clear-Host
+        Write-Host "URL to your registry settings file (JSON format) or leave blank to skip"
+        Write-Host "Check Github for the registry settings file layout example" -ForegroundColor Gray
+        Write-Host
+        $RegistrySettings = Read-Host "URL"
     }
-        
+    
+    if ([string]::IsNullOrEmpty($RegistrySettings)){
+      # The user entered nothing, so skip calling your script.
+      Clear-Host
+      Write-Host "Settings import skipped."
+      Start-Sleep 2
+      Return
+    }
+    
     if (-not [string]::IsNullOrEmpty($registrysettings)) {
         try {
             
@@ -669,11 +763,6 @@ function Import-RegistrySettings {
             Pause
         }
     }
-    else {
-        # The user entered nothing, so skip calling your script.
-        Write-Host "Settings import skipped."
-        Start-Sleep 2
-    }
 }
 
 function Install-MAS {
@@ -686,6 +775,11 @@ function Install-MAS {
     }
 
     if ([string]::IsNullOrEmpty($activate)) {
+
+        if ($bypass) {
+            Return
+        }
+
         do {
             Clear-Host
             Write-Host "Do you want to activate Windows using Microsoft Activation Scripts (MAS)?" -ForegroundColor Yellow
@@ -704,10 +798,10 @@ function Install-MAS {
         } while ($activate -ne "Y" -and $activate -ne "N")
     }
 
-    if ($activate -ne "Y") {      
+    if (([string]::IsNullOrEmpty($activate)) -or ($activate -eq "N")) {      
         Write-Host "Activation Scripts skipped."
         Start-Sleep 2
-        return
+        Return
     }
     
     if ($activate -eq "Y") {
@@ -728,8 +822,6 @@ function Install-MAS {
    
     }
 }
-
-
 
 function DeployAll {
     Show-ASCIIArt

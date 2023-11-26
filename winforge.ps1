@@ -8,7 +8,10 @@ param (
     [string]$wallpaperStyle,
     [string]$settings,
     [string]$apps,
-    [string]$activate
+    [string]$activate,
+    [string]$export,
+    [string]$bypass
+
 )
 
 
@@ -152,7 +155,6 @@ function Set-ComputerName {
     Write-Host $computerName -NoNewline -ForegroundColor White
     Start-Sleep 2
 }
-
 
 function Set-Theme {
     <#
@@ -374,7 +376,7 @@ public class Params
         Write-Host "Wallpaper import skipped..." -ForegroundColor Yellow
         Start-Sleep 2
     }
-}        
+}
 
 function Install-Apps {
 
@@ -504,9 +506,15 @@ function Import-Settings {
     # Example usage:
     # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
 
-    if ([string]::IsNullOrEmpty($settings)) {
-        $choiceMade = $false
 
+
+    if ([string]::IsNullOrEmpty($settings)) {
+        
+        if ($bypass -eq "yes" -or $bypass -eq "y"){
+            return
+        }
+
+        $choiceMade = $false
         while (-not $choiceMade) {
             Clear-Host
             Write-Host "Do you want to import O&OShutup10 Configuration?" -ForegroundColor Yellow
@@ -554,6 +562,8 @@ function Import-Settings {
 
     # 2nd Check of $settings variable - if still empty, skips the function entirely.
     if (-not [string]::IsNullOrEmpty($settings)) {
+        
+
         try {
             
             # Download O&OShutUp10
@@ -624,6 +634,7 @@ function Import-RegistrySettings {
     # Example usage:
     # Import-RegistrySettings -settings "https://raw.githubusercontent.com/graphixa/winforge/main/config.cfg"
 
+
     if ([string]::IsNullOrEmpty($RegistrySettings)) {
         Write-Host "Url to your registry settings file (JSON format) or leave blank to skip"
         $RegistrySettings = Read-Host "URL:"
@@ -670,9 +681,11 @@ function Import-RegistrySettings {
 
 function Install-MAS {
 
+
     if ($activate -eq "yes") {
         $activate = "Y"
     }
+
     if ($activate -eq "no") {
         $activate = "N"
     }
