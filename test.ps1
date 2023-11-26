@@ -38,7 +38,7 @@ foreach ($param in $paramDescriptions) {
         do {
             Clear-Host
             $userInput = Read-Host $param.Description
-            Set-Variable -Name $paramName -Value $userInput -Scope Global
+            Set-Variable -Name $global:paramName -Value $userInput -Scope Global
 
             if ($paramValidation -and $userInput -notmatch $paramValidation -and $userInput -ne "") {
                 Show-ErrorMessage -ErrorMessage $paramErrorMessage
@@ -46,8 +46,8 @@ foreach ($param in $paramDescriptions) {
             }
 
             if ($userInput -eq "") {
-                Write-Host "$paramName skipped..." -ForegroundColor Yellow
-                Start-Sleep 2
+                Write-Host "$global:paramName skipped..." -ForegroundColor Yellow
+                Start-Sleep 1
             }
 
         } while ($paramValidation -and $userInput -notmatch $paramValidation -and $userInput -ne "")
