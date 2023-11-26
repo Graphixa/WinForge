@@ -241,12 +241,11 @@ function Set-Theme {
     Set-Theme -theme "Dark" or Set-Theme Dark
 #>
 
-    if ($theme.ToLower() -eq "light") {
-        $theme = "1"  # Light Mode
+    if ($theme -eq "Light") {
+        $theme = 1  # Light Mode
     }
-
-    if ($theme.ToLower() -eq "dark") {
-        $theme = "0"  # Dark Mode
+    if ($theme -eq "Dark") {
+        $theme = 0  # Dark Mode
     }
 
     if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "1") -or ($theme -ne "0")) {
