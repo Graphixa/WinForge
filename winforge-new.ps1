@@ -242,14 +242,14 @@ function Set-Theme {
 #>
 
     if ($theme.ToLower() -eq "light") {
-        $theme = 1  # Light Mode
+        $theme = "1"  # Light Mode
     }
 
     if ($theme.ToLower() -eq "dark") {
-        $theme = 0  # Dark Mode
+        $theme = "0"  # Dark Mode
     }
 
-    if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne 1) -or ($theme -ne 0)) {
+    if (([string]::IsNullOrEmpty($theme)) -or ($theme -ne "1") -or ($theme -ne "0")) {
 
         if ($bypass) {
             return
@@ -265,10 +265,10 @@ function Set-Theme {
 
             switch ($choice) {
                 "1" {
-                    $theme = 1  # Light Mode
+                    $theme = "1"  # Light Mode
                 }
                 "2" {
-                    $theme = 0  # Dark Mode
+                    $theme = "0"  # Dark Mode
                 }
                 Default {
                     Clear-Host
@@ -294,7 +294,7 @@ function Set-Theme {
             Write-Host "Setting theme..." -ForegroundColor Yellow
             Start-Sleep 2
             Set-RegistryProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name SystemUsesLightTheme -Value $theme -PropertyType 'Dword' | Out-Null
-            Stop-Process explorer -Force
+            Stop-Process -Name explorer -Force
             Start-Process explorer
 
             $themeChoice = if ($theme -eq 1) {

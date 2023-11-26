@@ -1,17 +1,7 @@
 # Define the parameters as global variables
-#@Requires -RunAsAdministrator
-
-
 param (
-    [string]$theme,
-    [string]$computerName,
-    [string]$wallpaper,
-    [string]$wallpaperStyle,
-    [string]$settings,
-    [string]$apps,
-    [string]$activate,
-    [string]$export,
-    [string]$bypass
+    [string]$bypass,
+    [string]$export
 )
 
 # Define an array of hashtables with parameter, description, validation, and error message (if any)
@@ -33,46 +23,43 @@ function Show-ErrorMessage {
     Write-Host "Error: $ErrorMessage" -ForegroundColor Red
 }
 
-# Iterate through the parameters
+# Dynamically create parameters based on the entries in $paramDescriptions
 foreach ($param in $paramDescriptions) {
+    $paramName = $param.Name
+    $paramValidation = $param.Validation
+    $paramErrorMessage = $param.ErrorMessage
+
+    # Dynamically create parameters
+    Invoke-Expression "param([string]`$$paramName)"
+    
     # Check if the parameter is null
-    if (-not (Get-Variable -Name $param.Name -ValueOnly)) {
+    if (-not (Get-Variable -Name $paramName -ValueOnly)) {
         # Prompt the user for input
         do {
             Clear-Host
             $userInput = Read-Host $param.Description
-            Set-Variable -Name $param.Name -Value $userInput -Scope Global
+            Set-Variable -Name $paramName -Value $userInput -Scope Global
 
-            if ($param.Validation -and $userInput -notmatch $param.Validation -and $userInput -ne "") {
-                Show-ErrorMessage -ErrorMessage $param.ErrorMessage
+            if ($paramValidation -and $userInput -notmatch $paramValidation -and $userInput -ne "") {
+                Show-ErrorMessage -ErrorMessage $paramErrorMessage
                 Pause
             }
 
             if ($userInput -eq "") {
-                Write-Host "$($param.Name) skipped..." -ForegroundColor Yellow
+                Write-Host "$paramName skipped..." -ForegroundColor Yellow
                 Start-Sleep 2
             }
             else {
                 # Output the value
-                Write-Host "$($param.Name): $($global:$($param.Name))"
+                Write-Host ""$paramName": $($global:$paramName)"
             }
-        } while ($param.Validation -and $userInput -notmatch $param.Validation -and $userInput -ne "")
+        } while ($paramValidation -and $userInput -notmatch $paramValidation -and $userInput -ne "")
     }
 }
 
 # Output the values (optional)
-Write-Host "Theme: " -ForegroundColor Yellow -NoNewline
-Write-Host $global:theme -ForegroundColor White
-Write-Host "Computer Name: " -ForegroundColor Yellow -NoNewline
-Write-Host "$global:computerName" -ForegroundColor White
-Write-Host "Wallpaper: " -ForegroundColor Yellow
-Write-Host $global:wallpaper -ForegroundColor White 
-Write-Host "Wallpaper Style: " -ForegroundColor Yellow -NoNewline
-Write-Host $global:wallpaperStyle -ForegroundColor White
-Write-Host "Settings: "-ForegroundColor Yellow -NoNewline
-Write-Host $global:settings -ForegroundColor White
-Write-Host "Apps: " -ForegroundColor Yellow -NoNewline
-Write-Host $global:apps -ForegroundColor White
-Write-Host "Activate: " -ForegroundColor Yellow -NoNewline
-Write-Host $global:activate -ForegroundColor White
+foreach ($param in $paramDescriptions) {
+    $paramName = $param.Name
+    Write-Host "$paramName: $($global:$($paramName))" -ForegroundColor White
+}
 Pause
